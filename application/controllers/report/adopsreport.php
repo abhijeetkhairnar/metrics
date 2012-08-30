@@ -39,16 +39,13 @@ class Adopsreport extends My_Controller {
 		//$this->CampaignModel->advertiserName();
 		
 		$this->load->helper('autocomplete');
-		$advertiser_name_autocomplete 		= autocomplete_widget('advertiser_name');
-		$advertiser_id_autocomplete			= autocomplete_widget('advertiser_id');
-		$order_name_autocomplete 			= autocomplete_widget('order_name');
-		$order_id_autocomplete 				= autocomplete_widget('order_id');
-		$ad_name_autocomplete 				= autocomplete_widget('ad_name');
-		$ad_id_autocomplete 				= autocomplete_widget('ad_id');
-		$creative_name_autocomplete 		= autocomplete_widget('creative_name');
-		$creative_id_autocomplete 			= autocomplete_widget('creative_id');
-		$creative_format_autocomplete 		= autocomplete_widget('creative_format');
-		$ad_size_autocomplete 				= autocomplete_widget('ad_size');
+		$advertiser_name_autocomplete 		= autocomplete_widget('advertiser', 'advertiser_name');		
+		$order_name_autocomplete 			= autocomplete_widget('order', 'order_name');
+		$ad_name_autocomplete 				= autocomplete_widget('ad', 'ad_name');
+		$creative_name_autocomplete 		= autocomplete_widget('creative', 'creative_name');
+		$creative_format_autocomplete 		= autocomplete_widget('creative', 'creative_format');
+		$ad_size_autocomplete 				= autocomplete_widget('ad', 'ad_size');
+				
 	
 		$data['title'] = ucfirst('Camapign report'); // Capitalize the first letter
 		$data['advertiser_name_autocomplete']	=	$advertiser_name_autocomplete;
