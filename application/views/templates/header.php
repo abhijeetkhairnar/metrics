@@ -4,7 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?php echo $title ?> - metrics.glam.com</title>
 	<script type="text/javascript" src="<?php echo base_url();?>public/js/jquery-1.8.0.min.js"> </script>
-	<link rel='stylesheet' type='text/css' media='all' href="<?php echo base_url();?>public/css/style.css">
+	<script type="text/javascript" src="<?php echo base_url();?>public/js/jquery-ui-1.8.23.custom.min.js"> </script>
+	<script type="text/javascript" src="<?php echo base_url();?>public/js/common.js"> </script>
+	<link rel='stylesheet' type='text/css' media='all' href="<?php echo base_url();?>public/css/style.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url();?>public/css/menu.css"/>
 </head>
 <body>

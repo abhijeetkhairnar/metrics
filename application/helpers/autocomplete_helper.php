@@ -5,7 +5,7 @@
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- **/
 function autocomplete_widget($id){
 	$id = str_replace('"' , '', $id);
-	$html = '<input type="text" class="autocomplete" id="'.$id.'">';
+	$html = '<input type="text" class="auto_complete" id="'.$id.'">';
 	return $html;
 }
 

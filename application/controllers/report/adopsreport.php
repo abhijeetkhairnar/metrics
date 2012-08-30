@@ -47,6 +47,7 @@ class Adopsreport extends My_Controller {
 		$ad_id_autocomplete 				= autocomplete_widget('ad_id');
 		$creative_name_autocomplete 		= autocomplete_widget('creative_name');
 		$creative_id_autocomplete 			= autocomplete_widget('creative_id');
+		$creative_format_autocomplete 		= autocomplete_widget('creative_format');
 		$ad_size_autocomplete 				= autocomplete_widget('ad_size');
 	
 		$data['title'] = ucfirst('Camapign report'); // Capitalize the first letter
@@ -58,6 +59,7 @@ class Adopsreport extends My_Controller {
 		$data['ad_id_autocomplete']				=	$ad_id_autocomplete;
 		$data['creative_name_autocomplete']		=	$creative_name_autocomplete;
 		$data['creative_id_autocomplete']		=	$creative_id_autocomplete;
+		$data['creative_format_autocomplete']	=	$creative_format_autocomplete;
 		$data['ad_size_autocomplete']			=	$ad_size_autocomplete;
 					
 		$this->form_validation->set_rules('report-name', 'Report name', 'required');

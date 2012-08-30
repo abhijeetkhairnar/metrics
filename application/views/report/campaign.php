@@ -1,3 +1,4 @@
+<script type="text/javascript" src="<?php echo base_url();?>public/js/report/campaign.js" />
 <style>
 	.row{
 		padding-top: 2px;
@@ -53,43 +54,43 @@
 					<legend>Find Splash Ad:</legend>
 					<div>
 						<div class="row" class="row">
-							<label for="report-name">Report name</label> 
-							<div class="input-div"><input type="input" name="report-name" value="" id="report-name" /></div>
+							<label for="advertiser-name">Advertiser name</label> 
+							<div class="input-div"><?php echo $advertiser_name_autocomplete;?></div>
 							
-							<label for="description">Description</label>
-							<div class="input-div"><input type="input" name="description" value="" id="description" /></div>
+							<label for="advertiser-id">Advertiser Id</label>
+							<div class="input-div"><?php echo $advertiser_id_autocomplete;?></div>
 						</div>
 						
 						<div class="row">
-							<label for="report-name">Report name</label> 
-							<div class="input-div"><input type="input" name="report-name" value="" id="report-name" /></div>
+							<label for="order-name">Order name</label> 
+							<div class="input-div"><?php echo $order_name_autocomplete;?></div>
 							
-							<label for="description">Description</label>
-							<div class="input-div"><input type="input" name="description" value="" id="description" /></div>
+							<label for="order-id">Order Id</label>
+							<div class="input-div"><?php echo $order_id_autocomplete;?></div>
 						</div>
 						
 						<div class="row">
-							<label for="report-name">Report name</label> 
-							<div class="input-div"><input type="input" name="report-name" value="" id="report-name" /></div>
+							<label for="ad-name">Ad name</label> 
+							<div class="input-div"><?php echo $ad_name_autocomplete;?></div>
 							
-							<label for="description">Description</label>
-							<div class="input-div"><input type="input" name="description" value="" id="description" /></div>
+							<label for="ad_id">Ad Id</label>
+							<div class="input-div"><?php echo $ad_name_autocomplete;?></div>
 						</div>
 						
 						<div class="row">
-							<label for="report-name">Report name</label> 
-							<div class="input-div"><input type="input" name="report-name" value="" id="report-name" /></div>
+							<label for="creative-name">Creative Name</label> 
+							<div class="input-div"><?php echo $creative_name_autocomplete;?></div>
 							
-							<label for="description">Description</label>
-							<div class="input-div"><input type="input" name="description" value="" id="description" /></div>
+							<label for="creative-id">Creative Id</label>
+							<div class="input-div"><?php echo $creative_id_autocomplete;?></div>
 						</div>
 						
 						<div class="row">
-							<label for="report-name">Report name</label> 
-							<div class="input-div"><input type="input" name="report-name" value="" id="report-name" /></div>
+							<label for="creative-format-type">Creative Format Type</label> 
+							<div class="input-div"><?php echo $creative_format_autocomplete;?></div>
 							
-							<label for="description">Description</label>
-							<div class="input-div"><input type="input" name="description" value="" id="description" /></div>
+							<label for="ad-size">Ad Size</label>
+							<div class="input-div"><?php echo $ad_size_autocomplete;?></div>
 						</div>
 					</div>
 				</fieldset>	
