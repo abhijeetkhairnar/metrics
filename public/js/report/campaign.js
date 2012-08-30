@@ -1,15 +1,15 @@
-<script>
 	$(function() {
 			$(".auto_complete").autocomplete({
 				minLength: 1,
 				source: function( request, response ) {
+						alert(this.value); return;
 						$.ajax({
 							url: '<?php echo site_url("report/autocomplete");?>',
 							dataType: 'json',
 							type: 'POST',
 							data: {
-									id: request.id,
-									value: request.value
+									id: this.id,
+									value: this.value
 								},
 							success:    
 								function(data)
@@ -26,4 +26,3 @@
 					}
 			})
 	});			
-	</script>

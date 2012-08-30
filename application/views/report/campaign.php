@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<?php echo base_url();?>public/js/report/campaign.js" />
+<script type="text/javascript" src="<?php echo base_url();?>public/js/report/campaign.js"> </script>
 <style>
 	.row{
 		padding-top: 2px;
