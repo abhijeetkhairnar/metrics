@@ -1,13 +1,3 @@
-<script type="text/javascript" src="<?php echo base_url();?>public/js/report/campaign.js"> </script>
-<style>
-	.row{
-		padding-top: 2px;
-	}
-	.row label{
-		padding-left:10px;
-	}
-</style>
-
 	<div id="form-div">
 	<h2 class="form-title"><?php echo $title ?></h2>		
 		<div class="validation-div">
@@ -58,7 +48,9 @@
 							<div class="input-div"><?php echo $advertiser_name_autocomplete;?></div>
 							
 							<label for="advertiser-id">Advertiser Id</label>
-							<div class="input-div"><?php echo $advertiser_id_autocomplete;?></div>
+							<div class="input-div">
+							
+							</div>
 						</div>
 						
 						<div class="row">
@@ -66,15 +58,19 @@
 							<div class="input-div"><?php echo $order_name_autocomplete;?></div>
 							
 							<label for="order-id">Order Id</label>
-							<div class="input-div"><?php echo $order_id_autocomplete;?></div>
+							<div class="input-div">
+							
+							</div>
 						</div>
-						
+					<!--	
 						<div class="row">
 							<label for="ad-name">Ad name</label> 
 							<div class="input-div"><?php echo $ad_name_autocomplete;?></div>
 							
 							<label for="ad_id">Ad Id</label>
-							<div class="input-div"><?php echo $ad_name_autocomplete;?></div>
+							<div class="input-div">
+							
+							</div>
 						</div>
 						
 						<div class="row">
@@ -82,7 +78,9 @@
 							<div class="input-div"><?php echo $creative_name_autocomplete;?></div>
 							
 							<label for="creative-id">Creative Id</label>
-							<div class="input-div"><?php echo $creative_id_autocomplete;?></div>
+							<div class="input-div">
+							
+							</div>
 						</div>
 						
 						<div class="row">
@@ -92,6 +90,8 @@
 							<label for="ad-size">Ad Size</label>
 							<div class="input-div"><?php echo $ad_size_autocomplete;?></div>
 						</div>
+						
+						-->
 					</div>
 				</fieldset>	
 			</div>	

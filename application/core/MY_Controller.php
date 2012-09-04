@@ -75,14 +75,20 @@ class My_Controller extends CI_Controller {
 		}
 	}
 	
+	
 	/** --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
-	| @author		Amin S
-	| @UpdatedON	Aug-24-2-2012
-	| @Description 	As per the privileges header layout display
+	| @author		Akshay S
+	| @UpdatedON	Aug-31-2012
+	| @Description 	
 	 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- **/
 	
-	function __demo(){
-		echo "amin shah";
+	function __autocomplete($model_called, $model_name, $table_name, $term){
+				
+		$this->load->model('report/campaign_model');
+	
+	return  '["ActionScript","AppleScript","Asp","BASIC","C","C++","Clojure","COBOL","ColdFusion","Erlang","Fortran","Groovy","Haskell","Java","JavaScript","Lisp","Perl","PHP","Python","Ruby","Scala","Scheme"]';
+	
+	$this->campaign_model->getAutoCompleteResultSet();
 	}
 }
 

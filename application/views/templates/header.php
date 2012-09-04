@@ -8,6 +8,7 @@
 	<script type="text/javascript" src="<?php echo base_url();?>public/js/common.js"> </script>
 	<link rel='stylesheet' type='text/css' media='all' href="<?php echo base_url();?>public/css/style.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url();?>public/css/menu.css"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>public/css/smoothness/jquery-ui-1.8.23.custom.css" />
 </head>
 <body>
 	<div id="main-container">
@@ -43,7 +44,7 @@
 						</div>					
 					</li>
 					<li class="li_separator">|</li>
-					<li><a href="#" >Reports</a></li>
+					<li><a href="#" >History</a></li>
 				</ul>
 					
 					

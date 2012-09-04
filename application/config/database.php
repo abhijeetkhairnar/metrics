@@ -47,15 +47,14 @@
 
 $active_group = 'default';
 $active_record = TRUE;
-/**
+
 $dbhost = "10.0.8.246";    		//host
 $dbport = "1521";          		//port default is 1521
 $dbname = "ADQ";        		//name of database  
 $dbuser = "ade_data";      		//db user with all priviliges
 $dbpassword = "ade_data";    	// password of user
-$dbConnString = "(DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP)(HOST = ". $dbhost .")(PORT = ". $dbport ."))
-  )(CONNECT_DATA =(SERVICE_NAME = ". $dbname .")))";    // 
-**/
+//$dbConnString = "(DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP)(HOST = ". $dbhost .")(PORT = ". $dbport .")))(CONNECT_DATA =(SERVICE_NAME = ". $dbname .")))";    // 
+
   
   
 $db['default']['hostname'] = $dbhost;

@@ -210,10 +210,12 @@ padding-right:14px;
 #form-div .form-data .row {
 padding:10px 0px;
 overflow:hidden;
+line-height:20px;
 }
 #form-div .form-data .row label{
 float:left;
 width:250px;
+padding:0px 20px 0px 40px;
 }
 #form-div .form-data .row div.input-div{
 float:left;
@@ -232,4 +234,24 @@ input[type="submit"],input[type="button"]{
 }
 #form-div .validation-div{
 color:#FF0000;
+}
+
+.down-arrow-dd{
+border:1px solid #DDDDDD;
+background:url("../images/down-arrow-dd-16-16.png") no-repeat scroll center 4px transparent;
+width:22px;
+height:21px;
+float:left;
+cursor:pointer;
+border-left:none;
+}
+.down-arrow-input{
+float:left;
+margin:0px;
+padding:0px;
+height:21px;
+border:1px solid #DDDDDD;
+}
+select,textarea,input[type="text"],input[type="password"]{
+border:1px solid #DDDDDD;
 }
