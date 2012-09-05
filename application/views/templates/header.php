@@ -44,7 +44,7 @@
 						</div>					
 					</li>
 					<li class="li_separator">|</li>
-					<li><a href="#" >History</a></li>
+					<li><a href="<?php echo base_url();?>index.php/history/reporthistory" >History</a></li>
 				</ul>
 					
 					

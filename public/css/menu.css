@@ -63,7 +63,7 @@
 #menu li:hover .dropdown_columns {
 	left:-500px;
 	top:auto;
-	
+	z-index:999;	
 }
 #menu li .dropdown_columns ul{
 	overflow:hidden;

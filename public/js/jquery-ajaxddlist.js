@@ -87,7 +87,7 @@
 					
 				self.preLoader.fadeIn('slow');
 			 	if(self.options.ajax && self.options.source!=''){
-				 	$.ajax({ url: src, type: 'POST', data: vars, async: false, dataType: 'json',
+				 	$.ajax({ url: src, type: 'POST', data: vars, async: true, dataType: 'json',
 				 		success: function(data){
 				 			self._loadAvailable(data, node);
 					 	}, complete: function(XMLHttpRequest, textStatus){

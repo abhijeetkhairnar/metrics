@@ -10,7 +10,7 @@ function autocomplete_widget($table_name, $id){
 	$html .= '<script language="javascript" type="text/javascript">
 				$(function() {
 					$("#'.$id.'").autocomplete({
-						minLength: 1,
+						minLength: 3,
 						source:  "'.base_url().'index.php/report/adopsreport/autocomplete?table_name='.$table_name.'"
 					})
 				});

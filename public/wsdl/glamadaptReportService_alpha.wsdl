@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="urn:ReportService" xmlns:intf="urn:ReportService" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ReportService">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ReportService">
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="ArrayOf_xsd_string">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:string[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="AdaptObject">
+    <sequence>
+     <element name="fieldsToNull" nillable="true" type="impl:ArrayOf_xsd_string" minOccurs="0"/>
+     <element name="id" nillable="true" type="xsd:long" minOccurs="0"/>
+     <element name="name" nillable="true" type="xsd:string" minOccurs="0"/>
+     <element name="createdBy" nillable="true" type="xsd:int" minOccurs="0"/>
+     <element name="createdOn" nillable="true" type="xsd:dateTime" minOccurs="0"/>
+     <element name="updatedBy" nillable="true" type="xsd:int" minOccurs="0"/>
+     <element name="updatedOn" nillable="true" type="xsd:dateTime" minOccurs="0"/>
+    </sequence>
+   </complexType>
+   <complexType name="ReportData">
+    <complexContent>
+     <extension base="impl:AdaptObject">
+      <sequence>
+       <element name="active" nillable="true" type="xsd:int" minOccurs="0"/>
+       <element name="appId" nillable="true" type="xsd:int" minOccurs="0"/>
+       <element name="dateRangeDesc" nillable="true" type="xsd:string" minOccurs="0"/>
+       <element name="dateRangeNum" nillable="true" type="xsd:int" minOccurs="0"/>
+       <element name="deliveryMethod" nillable="true" type="xsd:int" minOccurs="0"/>
+       <element name="email" nillable="true" type="xsd:string" minOccurs="0"/>
+       <element name="endDate" nillable="true" type="xsd:dateTime" minOccurs="0"/>
+       <element name="endDateRange" nillable="true" type="xsd:string" minOccurs="0"/>
+       <element name="frequencyType" nillable="true" type="xsd:string" minOccurs="0"/>
+       <element name="frequencyVal" nillable="true" type="xsd:int" minOccurs="0"/>
+       <element name="isCustomSql" nillable="true" type="xsd:int" minOccurs="0"/>
+       <element name="isIncHeader" nillable="true" type="xsd:int" minOccurs="0"/>
+       <element name="isRunReport" nillable="true" type="xsd:int" minOccurs="0"/>
+       <element name="isShared" nillable="true" type="xsd:int" minOccurs="0"/>
+       <element name="isScheduled" nillable="true" type="xsd:int" minOccurs="0"/>
+       <element name="parentCustomReportId" nillable="true" type="xsd:long" minOccurs="0"/>
+       <element name="priority" nillable="true" type="xsd:int" minOccurs="0"/>
+       <element name="reportName" nillable="true" type="xsd:string" minOccurs="0"/>
+       <element name="reportDesc" nillable="true" type="xsd:string" minOccurs="0"/>
+       <element name="runType" nillable="true" type="xsd:string" minOccurs="0"/>
+       <element name="startDate" nillable="true" type="xsd:dateTime" minOccurs="0"/>
+       <element name="startDateRange" nillable="true" type="xsd:string" minOccurs="0"/>
+       <element name="timeZone" nillable="true" type="xsd:int" minOccurs="0"/>
+       <element name="transactionId" nillable="true" type="xsd:int" minOccurs="0"/>
+       <element name="userId" nillable="true" type="xsd:long" minOccurs="0"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType name="ReportDetail">
+    <complexContent>
+     <extension base="impl:AdaptObject">
+      <sequence>
+       <element name="columnName" nillable="true" type="xsd:string" minOccurs="0"/>
+       <element name="columnVal" nillable="true" type="xsd:string" minOccurs="0"/>
+       <element name="metaType" nillable="true" type="xsd:string" minOccurs="0"/>
+       <element name="operatorVal" nillable="true" type="xsd:string" minOccurs="0"/>
+       <element name="reportId" nillable="true" type="xsd:long" minOccurs="0"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOfReportDetail">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="impl:ReportDetail[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="Report">
+    <sequence>
+     <element name="reportData" nillable="true" type="impl:ReportData" minOccurs="0"/>
+     <element name="reportDetails" nillable="true" type="impl:ArrayOfReportDetail" minOccurs="0"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOfReport">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="impl:Report[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="AdaptApiStatus">
+    <sequence>
+     <element name="success" type="xsd:int" minOccurs="0"/>
+     <element name="errorCode" type="xsd:long" minOccurs="0"/>
+     <element name="errorMessage" nillable="true" type="xsd:string" minOccurs="0"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOfAdaptApiStatus">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="impl:AdaptApiStatus[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="AdaptApiException">
+    <sequence>
+     <element name="errorCode" type="xsd:long" minOccurs="0"/>
+     <element name="status" nillable="true" type="impl:ArrayOfAdaptApiStatus" minOccurs="0"/>
+    </sequence>
+   </complexType>
+   <complexType name="ReportResult">
+    <sequence>
+     <element name="id" nillable="true" type="xsd:long" minOccurs="0"/>
+     <element name="reportId" nillable="true" type="xsd:long" minOccurs="0"/>
+     <element name="status" nillable="true" type="xsd:string" minOccurs="0"/>
+     <element name="sequenceNumber" nillable="true" type="xsd:long" minOccurs="0"/>
+     <element name="generatedOn" nillable="true" type="xsd:dateTime" minOccurs="0"/>
+     <element name="format" nillable="true" type="xsd:string" minOccurs="0"/>
+     <element name="recordCount" nillable="true" type="xsd:long" minOccurs="0"/>
+     <element name="reportName" nillable="true" type="xsd:string" minOccurs="0"/>
+     <element name="failedReason" nillable="true" type="xsd:string" minOccurs="0"/>
+     <element name="fileName" nillable="true" type="xsd:string" minOccurs="0"/>
+     <element name="fileSize" nillable="true" type="xsd:long" minOccurs="0"/>
+     <element name="nextScheduleRun" nillable="true" type="xsd:dateTime" minOccurs="0"/>
+     <element name="data" nillable="true" type="xsd:base64Binary" minOccurs="0"/>
+     <element name="reportType" nillable="true" type="xsd:int" minOccurs="0"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOfReportResult">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="impl:ReportResult[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="instanceIdResponse">
+
+      <wsdl:part name="instanceIdReturn" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="AdaptApiException">
+
+      <wsdl:part name="fault" type="impl:AdaptApiException"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getReportResponse">
+
+      <wsdl:part name="getReportReturn" type="impl:Report"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="appIdResponse">
+
+      <wsdl:part name="appIdReturn" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getHistoryRequest">
+
+      <wsdl:part name="in0" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="transactionIdRequest">
+
+   </wsdl:message>
+
+   <wsdl:message name="createReportsResponse">
+
+      <wsdl:part name="createReportsReturn" type="impl:ArrayOfReport"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getReportResultResponse">
+
+      <wsdl:part name="getReportResultReturn" type="impl:ReportResult"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getReportsByFilterRequest">
+
+      <wsdl:part name="in0" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getReportResultRequest">
+
+      <wsdl:part name="in0" type="xsd:long"/>
+
+      <wsdl:part name="in1" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="instanceIdRequest">
+
+      <wsdl:part name="in0" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getReportRequest">
+
+      <wsdl:part name="in0" type="xsd:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getReportsByFilterResponse">
+
+      <wsdl:part name="getReportsByFilterReturn" type="impl:ArrayOfReport"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="appIdRequest">
+
+      <wsdl:part name="in0" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateReportsResponse">
+
+      <wsdl:part name="updateReportsReturn" type="impl:ArrayOfReport"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getHistoryResponse">
+
+      <wsdl:part name="getHistoryReturn" type="impl:ArrayOfReportResult"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="BasicAuthRequest">
+
+      <wsdl:part name="in0" type="xsd:string"/>
+
+      <wsdl:part name="in1" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="transactionIdResponse">
+
+      <wsdl:part name="transactionIdReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getCompletedReportResultRequest">
+
+      <wsdl:part name="in0" type="xsd:long"/>
+
+      <wsdl:part name="in1" type="xsd:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getCompletedReportResultResponse">
+
+      <wsdl:part name="getCompletedReportResultReturn" type="impl:ReportResult"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateReportsRequest">
+
+      <wsdl:part name="in0" type="impl:ArrayOfReport"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="BasicAuthResponse">
+
+      <wsdl:part name="BasicAuthReturn" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="createReportsRequest">
+
+      <wsdl:part name="in0" type="impl:ArrayOfReport"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="ReportService">
+
+      <wsdl:operation name="createReports" parameterOrder="in0">
+
+         <wsdl:input message="impl:createReportsRequest" name="createReportsRequest"/>
+
+         <wsdl:output message="impl:createReportsResponse" name="createReportsResponse"/>
+
+         <wsdl:fault message="impl:AdaptApiException" name="AdaptApiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateReports" parameterOrder="in0">
+
+         <wsdl:input message="impl:updateReportsRequest" name="updateReportsRequest"/>
+
+         <wsdl:output message="impl:updateReportsResponse" name="updateReportsResponse"/>
+
+         <wsdl:fault message="impl:AdaptApiException" name="AdaptApiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getReport" parameterOrder="in0">
+
+         <wsdl:input message="impl:getReportRequest" name="getReportRequest"/>
+
+         <wsdl:output message="impl:getReportResponse" name="getReportResponse"/>
+
+         <wsdl:fault message="impl:AdaptApiException" name="AdaptApiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getReportsByFilter" parameterOrder="in0">
+
+         <wsdl:input message="impl:getReportsByFilterRequest" name="getReportsByFilterRequest"/>
+
+         <wsdl:output message="impl:getReportsByFilterResponse" name="getReportsByFilterResponse"/>
+
+         <wsdl:fault message="impl:AdaptApiException" name="AdaptApiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getReportResult" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:getReportResultRequest" name="getReportResultRequest"/>
+
+         <wsdl:output message="impl:getReportResultResponse" name="getReportResultResponse"/>
+
+         <wsdl:fault message="impl:AdaptApiException" name="AdaptApiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getCompletedReportResult" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:getCompletedReportResultRequest" name="getCompletedReportResultRequest"/>
+
+         <wsdl:output message="impl:getCompletedReportResultResponse" name="getCompletedReportResultResponse"/>
+
+         <wsdl:fault message="impl:AdaptApiException" name="AdaptApiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getHistory" parameterOrder="in0">
+
+         <wsdl:input message="impl:getHistoryRequest" name="getHistoryRequest"/>
+
+         <wsdl:output message="impl:getHistoryResponse" name="getHistoryResponse"/>
+
+         <wsdl:fault message="impl:AdaptApiException" name="AdaptApiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="instanceId" parameterOrder="in0">
+
+         <wsdl:input message="impl:instanceIdRequest" name="instanceIdRequest"/>
+
+         <wsdl:output message="impl:instanceIdResponse" name="instanceIdResponse"/>
+
+         <wsdl:fault message="impl:AdaptApiException" name="AdaptApiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="BasicAuth" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:BasicAuthRequest" name="BasicAuthRequest"/>
+
+         <wsdl:output message="impl:BasicAuthResponse" name="BasicAuthResponse"/>
+
+         <wsdl:fault message="impl:AdaptApiException" name="AdaptApiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="transactionId">
+
+         <wsdl:input message="impl:transactionIdRequest" name="transactionIdRequest"/>
+
+         <wsdl:output message="impl:transactionIdResponse" name="transactionIdResponse"/>
+
+         <wsdl:fault message="impl:AdaptApiException" name="AdaptApiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="appId" parameterOrder="in0">
+
+         <wsdl:input message="impl:appIdRequest" name="appIdRequest"/>
+
+         <wsdl:output message="impl:appIdResponse" name="appIdResponse"/>
+
+         <wsdl:fault message="impl:AdaptApiException" name="AdaptApiException"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="ReportServiceSoapBinding" type="impl:ReportService">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="createReports">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createReportsRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createReportsResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AdaptApiException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="AdaptApiException" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateReports">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="updateReportsRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="updateReportsResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AdaptApiException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="AdaptApiException" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getReport">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getReportRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getReportResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AdaptApiException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="AdaptApiException" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getReportsByFilter">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getReportsByFilterRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getReportsByFilterResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AdaptApiException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="AdaptApiException" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getReportResult">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getReportResultRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getReportResultResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AdaptApiException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="AdaptApiException" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getCompletedReportResult">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getCompletedReportResultRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getCompletedReportResultResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AdaptApiException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="AdaptApiException" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getHistory">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getHistoryRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getHistoryResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AdaptApiException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="AdaptApiException" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="instanceId">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="instanceIdRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="instanceIdResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AdaptApiException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="AdaptApiException" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="BasicAuth">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="BasicAuthRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="BasicAuthResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AdaptApiException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="AdaptApiException" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="transactionId">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="transactionIdRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="transactionIdResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AdaptApiException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="AdaptApiException" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="appId">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="appIdRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="appIdResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AdaptApiException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="AdaptApiException" namespace="urn:ReportService" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="ReportService">
+
+      <wsdl:port binding="impl:ReportServiceSoapBinding" name="ReportService.php">
+
+
+         <wsdlsoap:address location="http://testapi-adapt.glam.colo/ews/ga/alpha/v1.2.0/Report/ReportService.php"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>
