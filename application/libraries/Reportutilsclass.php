@@ -3449,16 +3449,20 @@ public static function getOptionList($sKey,$sClass=null,$sSelectedOption="",$bBl
 		}
 		
 		public function generateLookUP($report_type){
-			$oReportDao =  new ReportDAO();
-			$returnvalue = $oReportDao->generateLookUP($report_type);
-			unset($oReportDao);
+			$CI =& get_instance();
+			$CI->load->model('report/campaign_model', 'campaign_model');
+			$returnvalue = $CI->campaign_model->generateLookUP($report_type);
+			echo "<pre>"; print_r($returnvalue); echo "</pre>";
+			unset($CI);
 			return $returnvalue;
 		}
 		
 		public function reverseLookup($report_type)
 		{
-			$oReportDao =  new ReportDAO();
-			$returnvalue = $oReportDao->generateLookUP($report_type);
+			$CI =& get_instance();
+			$CI->load->model('report/campaign_model', 'campaign_model');
+			$returnvalue = $CI->campaign_model->generateLookUP($report_type);
+			
 			$final_arr=array();
 			foreach($returnvalue as $keyname1=>$vals_arr1)
 			{
@@ -4934,5 +4938,254 @@ public static function getCountryByIds($CountryIds)
 		$end_date = date("m/d/Y", strtotime($end_date));
 		return $start_date."##".$end_date;
 	}
+
+	public function dataProcess($aRecordData,$action)
+		{
+			$reportData = new stdClass();
+			
+			if(isset($aRecordData['id']))
+			{
+				$reportData->id = $aRecordData['id'];
+			}
+			
+			if(isset($aRecordData['sReportName']))
+			{
+				$reportData->reportName = $aRecordData['sReportName'];
+			}
+
+			if(isset($aRecordData['iReportType']))
+			{
+				$reportData->runType = $aRecordData['iReportType'];
+			}
+			
+			if(isset($aRecordData['active']))
+			{
+				$reportData->active = $aRecordData['active'];
+			}
+			
+			if(isset($aRecordData['startDate']))
+			{
+				$reportData->startDate =$aRecordData['startDate'];
+			}
+			
+			if(isset($aRecordData['endDate']))
+			{
+				$reportData->endDate = $aRecordData['endDate'];
+			}
+			
+			if(isset($aRecordData['deliverymethod']))
+			{
+				$reportData->deliveryMethod= $aRecordData['deliverymethod'];
+			}
+			
+			if(isset($aRecordData['iReportSharing']))
+			{
+				$reportData->isShared = $aRecordData['iReportSharing'];
+			}
+
+			if(isset($aRecordData['frequencytype']))
+			{
+				$reportData->frequencyType = $aRecordData['frequencytype'];
+			}
+			
+			if(isset($aRecordData['frequencyval']))
+			{
+				$reportData->frequencyVal = $aRecordData['frequencyval'];
+			}
+
+			if(isset($aRecordData['isrunreport']))
+			{
+				$reportData->isRunReport = $aRecordData['isrunreport'];
+			}
+			
+			if(isset($aRecordData['DATE_RANGE_LIST'][0]))
+			{
+				$reportData->startDateRange = $aRecordData['DATE_RANGE_LIST'][0];
+			}
+			
+			if(isset($aRecordData['DATE_RANGE_LIST'][1]))
+			{
+				$reportData->endDateRange =  $aRecordData['DATE_RANGE_LIST'][1];
+			}
+		 	
+			if(isset($aRecordData['emails']))
+			{
+				$reportData->email = $aRecordData['emails'];
+			}
+			
+			if(isset($aRecordData['DATE_RANGE_DESC']))
+			{
+				$reportData->dateRangeDesc = $aRecordData['DATE_RANGE_DESC'];
+			}
+			
+			if($reportData->dateRangeDesc!='CUSTOM')
+			{
+				$reportData->startDateRange = '';
+				$reportData->endDateRange =  '';
+			}
+
+			if(isset($aRecordData['DATE_RANGE_NUM']))
+			{
+				$reportData->dateRangeNum = $aRecordData['DATE_RANGE_NUM'];
+			}
+		
+			if(isset($aRecordData['is_scheduled']))
+			{
+				$reportData->isScheduled = $aRecordData['is_scheduled'];
+			}
+			
+			if(isset($aRecordData['TIME_ZONE']))
+			{
+				$reportData->timeZone = $aRecordData['TIME_ZONE'];
+			}
+
+			$reportData->isIncHeader = $aRecordData['INCLUDE_HEADER'];
+		
+			$counter = 1;
+			
+			foreach($aRecordData['DIMENSION_LIST'] AS $KeysDimension=>$ValsDimension)
+		 	{
+		 		$reportDetail{$counter} = new stdClass();
+				$reportDetail{$counter}->columnName = $ValsDimension;
+				$reportDetail{$counter}->columnVal = $ValsDimension;
+				$reportDetail{$counter}->metaType = 'D';
+				$reportDetails[] = $reportDetail{$counter};
+		 	}
+
+		 	foreach($aRecordData['METRIC_LIST'] AS $KeysDimension=>$ValsDimension)
+		 	{
+				$reportDetail{$counter} = new stdClass();
+				$reportDetail{$counter}->columnName = $ValsDimension;
+				$reportDetail{$counter}->columnVal = $ValsDimension;
+				$reportDetail{$counter}->metaType = 'M';
+				$reportDetails[] = $reportDetail{$counter};
+		 	}
+					
+			$countFilter= count($aRecordData['FILTER_LIST']);
+			$aLookUP = array();
+			$aLookUP = self::generateLookUP($aRecordData['iReportType']);
+			if($countFilter>0)
+			{
+			
+				/*
+					Currently $aLookUP dont have 'G' and 'L' runtype support, So if our report is of type 'G' or 'L'..
+					So as per the discussion with Abhijeet k. we are considering that report as 'N' means standared report
+				*/
+				if ($aRecordData['RUN_TYPE'] == 'G' or $aRecordData['RUN_TYPE'] == 'L'){
+					$finalLookUp = $aLookUP['1']['F'];					
+				}else{					
+					$finalLookUp = $aLookUP[$aRecordData['RUN_TYPE']]['F'];
+				}
+		
+				$transfrArr  = array_flip($finalLookUp);				
+	
+				foreach($aRecordData['FILTER_LIST'] AS $KeysFilter=>$ValsFilter)
+				{
+					foreach($ValsFilter AS $keys=>$vals)
+					{						
+						if($action=='insert')
+						{
+							if(trim($vals)!='')
+							{
+								$vals = implode(array_map("trim", explode(',',trim($vals,','))),',');
+							}
+							$vals = "'".str_replace(",", "','", $vals)."'";
+						}
+			
+						//
+						if($keys=='ADM_ADS.META_COUNTRY')
+						{
+							$vals = ReportUtils::getMetaCountryByNames($vals);
+						}
+
+						if($keys=='INCLUDE_AFFILIATE_LIST' ||
+							$keys=='EXCLUDE_AFFILIATE_LIST' )
+						{
+							//$vals = ReportUtils::getIncludeAffByNames($vals);
+						}
+				
+						if($keys=='ADQ_AFFILIATE.COUNTRY_CONTRACT')
+						{
+							$vals = self::getCountryByNames($vals);
+						}
+
+						if($keys=='AGG.INCLUDE_FLAGS' || $keys=='AGG.EXCLUDE_FLAGS' )
+						{
+							$vals = self::getImpressionFlagByNames($vals);
+						}
+
+						if($keys=='AGG.TAG_TYPE')
+						{
+							$vals = self::getTagTypeByNames($vals);
+						}
+
+						
+						if($keys=='AGG.IS_ATF')
+						{
+							$vals = self::getATFByNames($vals);
+						}
+		
+						if($keys=='AGG.GA_BROWSER_ID')
+						{
+							$vals = self::getBrowserByNames($vals);
+						}
+
+						
+						if($keys=='AGG.GA_CITY')
+						{
+							$vals = self::getCityByNames($vals);
+						}
+						
+						if($keys=='UPPER(ADM_ADS.AD_SIZE_ID)')
+						{
+							$vals = strtoupper($vals);
+						}
+						
+						$transformedKey = $transfrArr[$keys];
+						
+						if($transformedKey!='')
+						{
+							$reportDetail{$counter} = new stdClass();
+							$reportDetail{$counter}->columnName = $transformedKey;
+							$reportDetail{$counter}->columnVal = $vals;
+							$reportDetail{$counter}->metaType = 'F';
+							$reportDetail{$counter}->operatorVal = $ValsFilter['OPERATOR_VAL'][$keys];
+							$reportDetails[] = $reportDetail{$counter};
+						}
+						$transformedKey='';
+						
+						
+					}
+				}				
+			}
+				
+				$finalLookUp = $aLookUP['TIMEZONE']['T'];
+				$transfrArr  = array_flip($finalLookUp);	
+				$reportDetail{$counter} = new stdClass();
+				$reportDetail{$counter}->columnName = $transfrArr[$aRecordData['TIME_ZONE']];
+				$reportDetail{$counter}->columnVal = $aRecordData['TIME_ZONE'];
+				
+				$reportDetail{$counter}->metaType = 'T';
+				$reportDetails[] = $reportDetail{$counter};
+
+				//echo $keys;
+				//exit;
+				
+				
+			
+			if(isset($aRecordData['REPORT_DESC']))
+			{
+				$reportData->reportDesc = $aRecordData['REPORT_DESC'];
+			}
+
+			$report = new stdClass();
+			$report->reportData = $reportData;
+			$report->reportDetails = $reportDetails;
+		
+			echo "<pre>";
+			print_r($report)
+				exit;
+			return $report;
+		}
 
 }

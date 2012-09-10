@@ -19,7 +19,12 @@ error_reporting(E_ALL ^ E_NOTICE);
 	
 	<script>
 		$(document).ready(function() {
+			$("#resetBtn").click(function() {
+				$("#hdn_ad_id").val();
+				$("#gbox_listAdIds").hide();
+			});
 			$("#searchBtn").click(function() {
+				$("#hdn_ad_id").val();
 				$.ajax({
 				url: "<?php echo $this->config->base_url(); ?>index.php/report/adopsreport/getAdIDs",
 				type: "post",
@@ -27,21 +32,44 @@ error_reporting(E_ALL ^ E_NOTICE);
 					},
 				// callback handler that will be called on success
 				success: function(response, textStatus, jqXHR){
-					jQuery("#listAdIds").jqGrid({ 
-							datatype: "local",
-							data: [],
-							colNames:['Select','Advertisder Name', 'Ad Name', 'Ad ID','Ad Size','Start Date','End Date'], 
-							colModel:[ {name:'select',index:'select', width:30, sorttype:"int"}, {name:'advertiser_name',index:'advertiser_name', width:150, sorttype:"date"}, {name:'ad_name',index:'ad_name', width:150}, {name:'ad_id',index:'ad_id', width:80, align:"right",sorttype:"float"}, {name:'ad_size',index:'ad_size', width:80, align:"right",sorttype:"float"}, {name:'start_date',index:'start_date', width:80,align:"right",sorttype:"float"}, {name:'end_date',index:'end_date', width:150, sortable:false} ], 
-							rowNum:20, 
-							rowList:[10,20,30], 
-							pager: '#pagination', 
-							sortname: 'id', 
-							height: "100",
-							viewrecords: true, 
-							sortorder: "desc", 
-							loadonce: true, 
-							caption: "List of Ad Ids" 
-						});
+							jQuery("#listAdIds").jqGrid({ 
+								datatype: "local",
+								data: eval(response),
+								colNames:['Id', 'Select','Advertisder Name', 'Ad Name', 'Ad ID','Ad Size','Start Date','End Date'], 
+								colModel:[ 
+											{name:'id',index:'id', width:10, sorttype:"int", hidden:true}, 
+											{name:'select',index:'select', width:30, sorttype:"int"}, 
+											{name:'advertiser_name',index:'advertiser_name', width:150, sorttype:"date"},
+											{name:'ad_name',index:'ad_name', width:150}, 
+											{name:'ad_id',index:'ad_id', width:80, align:"right",sorttype:"float"},
+											{name:'ad_size',index:'ad_size', width:80, align:"right",sorttype:"float"}, 
+											{name:'start_date',index:'start_date', width:80,align:"right",sorttype:"float"},
+											{name:'end_date', align:"right", index:'end_date', width:80, sortable:false} 
+										], 
+								rowNum:20, 
+								rowList:[10,20,30], 
+								pager: '#pagination', 
+								sortname: 'advertiser_name', 
+								height: "100",
+								viewrecords: true, 
+								sortorder: "desc", 
+								loadonce: true, 
+								caption: "List of Ad Ids",
+								gridComplete: function () {
+									$("td[aria-describedby=listAdIds_select] input[type='radio']")
+									 .click(function () {												
+										 var id = $(this).val(); 										 
+										 if (id){ 
+											var ret = jQuery("#listAdIds").jqGrid('getRowData',id); 
+											$("#_custom").attr('checked', 'checked');
+											$("#hdn_ad_id").val(ret.ad_id);
+											$("#startDate").val(ret.start_date);
+											$("#endDate").val(ret.end_date);											
+										 }
+									 });
+
+								}
+						});						
 					}
 				});
 			});
@@ -143,7 +171,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 						
 						<div class="row action-button">
 							<input type="button" id="searchBtn" value="Search" name="search">
-							<input type="button" id="restBtn" value="Reset" name="submit">
+							<input type="button" id="resetBtn" value="Reset" name="submit">
 						</div>
 					</div>
 					<table id="listAdIds"></table> 
@@ -163,7 +191,10 @@ error_reporting(E_ALL ^ E_NOTICE);
 				</div>
 				<div id="form-group-3">
 					<div class="row">
-						<label for="predefined">Predefined</label> 
+						<label for="predefined">
+							<input type="radio" name="_predefined" id="_predefined">
+							Predefined
+						</label> 
 						<div class="input-div">
 							<select id="predefined" name="predefined">
 								<option value="Yesterday">Yesterday</option>
@@ -178,7 +209,10 @@ error_reporting(E_ALL ^ E_NOTICE);
 						</div>
 					</div>
 					<div class="row">
-						<label for="last">Last</label> 
+						<label for="last">
+							<input type="radio" name="_last" id="_last">
+							Last
+						</label> 
 						<div class="input-div">
 							<input type="input" name="last_num" value="" id="last_num" />
 							<select id="last" name="last">
@@ -188,16 +222,15 @@ error_reporting(E_ALL ^ E_NOTICE);
 						</div>
 					</div>
 					<div class="row">
-						<label for="custom">Custom</label> 
+						<label for="custom">
+							<input type="radio" name="_custom" id="_custom">
+							Custom
+						</label> 
 						<div class="input-div">
-							Start Date <input type="input" name="start-date" value="" id="start-date" />
-							End Date <input type="input" name="end-date" value="" id="end-date" />
+							Start Date <input type="input" name="startDate" value="" id="startDate" />
+							End Date <input type="input" name="endDate" value="" id="endDate" />
 						</div>
-					</div>		
-					<div class="row">
-						<label for="report-name">Report Schedule</label> 
-						<div class="input-div"><a href="#">Not Scheduled</a></div>
-					</div>						
+					</div>												
 				</div>
 				
 				<div class="row action-button">
@@ -206,5 +239,6 @@ error_reporting(E_ALL ^ E_NOTICE);
 				</div>
 			</div>
 		</div>
+		<input type="hidden" name="hdn_ad_id" id="hdn_ad_id" />
 	</form>
 	</div>	

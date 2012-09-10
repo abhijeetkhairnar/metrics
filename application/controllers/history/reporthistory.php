@@ -10,10 +10,7 @@ class Reporthistory extends CI_Controller {
 	
 	function index()
 	{
-		$data['title'] = ucfirst('Report History'); // Capitalize the first letter
-		
-		
-		
+		$data['title'] = ucfirst('Report History'); // Capitalize the first letter	
 		
 		/**************************************************************************************/
 		/**************************************************************************************/		
