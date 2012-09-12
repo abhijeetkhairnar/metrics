@@ -1,3 +1,11 @@
+<?php
+/******************************************************
+*	FileName 	 : header.php
+*	Created By 	 : Akshay Sardar.
+*	Created Date : 25 AUG 2012
+*	Description	 : header view file included for all pages.               
+******************************************************/ 
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>

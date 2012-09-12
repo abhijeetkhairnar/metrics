@@ -1,0 +1,95 @@
+/******************************************************
+*	FileName 	 : dd-style.css
+*	Created By 	 : Aksahy Sardar
+*	Created Date : 05 Sept 2012
+*	Description	 : DD widgets CSS
+*	Version 	 : 1.0                  
+******************************************************/
+body { font-size: 12px; font-family: Arial; }
+.clear { clear: both; }
+.dd-warpper-div{
+overflow:hidden
+}
+.dd-warpper-left,
+.dd-warpper-right
+{
+	width:300px;
+	float:left;
+	z-index: -1;
+border:1px solid #DDDDDD;
+	padding:1px;
+}
+.dd-warpper-left .dd-left-search-div,
+.dd-warpper-right .dd-right-search-div
+{
+border:1px solid #DDDDDD;
+background-color:#DDDDDD;
+padding:2px;
+margin-bottom:1px;
+}
+.dd-left-search,
+.dd-right-search
+{
+border:1px solid #AAA;
+}
+.dd-left-div,
+.dd-right-div{
+	height:157px;
+	border:1px solid #DDDDDD;
+	overflow:auto;
+}
+.dd-middle-div{
+	float:left;
+	width:50px;
+	height:157px;
+	z-index: -1;	
+}
+.dd-left-div ul,
+.dd-right-div ul{
+margin:0px;
+padding:0px;
+z-index: -1;	
+}
+.dd-left-div ul li,
+.dd-right-div ul li{
+margin:1px;
+padding:2px;
+border:1px solid #DDD;
+list-style:none;
+background-color:#FFF;
+}
+.ui-icon{
+background-image: url("../images/ui-icons_888888_256x240.png");
+height: 16px;
+width: 16px;
+}
+.ui-icon-plus{
+background-position: -16px -128px;
+cursor: pointer;
+display: block;
+float: right;
+}
+.ui-icon-minus{
+background-position:-48px -128px;
+cursor: pointer;
+display: block;
+float: right;
+}
+.ui-icon-close{
+background-position: -80px -128px;
+cursor: pointer;
+display: block;
+float: right;
+}
+.dd-left-div ul li ul{
+padding-left:20px;
+}
+.ui-loading{
+background: url("../images/ajax-loader.gif") no-repeat scroll center center #EEEEEE;
+opacity: 0.7;
+z-index: 99;
+width:658px;
+height:190px;
+left:0px;
+top:0px;
+}

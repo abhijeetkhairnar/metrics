@@ -1,5 +1,11 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+<?php  
+/******************************************************
+*	FileName 	 : MY_Log.php
+*	Created By 	 : Amin S.
+*	Created Date : 30 Aug 2012.
+*	Description	 : Log library file.             
+******************************************************/
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 require_once APPPATH . 'third_party/ci_log4php/Logger.php';
 class MY_Log extends CI_Log {
 	

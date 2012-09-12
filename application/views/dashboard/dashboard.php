@@ -1,3 +1,11 @@
+<?php 
+/******************************************************
+*	FileName 	 : dashboard.php
+*	Created By 	 : Aksahy Sardar.
+*	Created Date : 25 Aug 2012.
+*	Description	 : dashboard view file.       
+******************************************************/
+?>
 <script type="text/javascript">
 $(document).ready(function(){						   
 	$(".report-favorites-row .close").click(function(){

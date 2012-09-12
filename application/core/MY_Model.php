@@ -7,7 +7,6 @@
  * @UpdatedON	Aug-24-2-2012
  * @Description 
  */
-
 // ------------------------------------------------------------------------
 
 class My_Model extends CI_Model {
@@ -16,7 +15,12 @@ class My_Model extends CI_Model {
 		$data = array();
         parent::__construct();
     }
-	
+
+	/** --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+	| @author		Amin S
+	| @UpdatedON	Aug-28-2012
+	| @Description 	ade connection
+	 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- **/	
 	public function __adeConnection(){
 		$conn = oci_connect('ade_data', 'ade_data', 'ADQ');
 		if ($conn){
@@ -26,6 +30,11 @@ class My_Model extends CI_Model {
 		}
 	}
 	
+	/** --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+	| @author		Amin S
+	| @UpdatedON	Aug-28-2012
+	| @Description 	campapign connection
+	 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- **/	
 	public function __campapignConnection(){
 		$conn = oci_connect('campaign', 'campaign', 'ADQ');
 		if ($conn){
@@ -34,18 +43,23 @@ class My_Model extends CI_Model {
 			return false;
 		}
 	}
-
+	
+	/** --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+	| @author		Amin S
+	| @UpdatedON	Aug-28-2012
+	| @Description 	close connection
+	 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- **/	
 	public function __adeConnectionClose($conn){
 		oci_close($conn);
 	}	
 		
-/////////////////////////////////////////
-/**
-  * Method To generate lookup array for dimentions , filters and metrics  .
-  * @param <report_type> which identifies report type.
-  * @return  array(columns fetched from DB.),
-*/
-/////////////////////////////////////////	
+	/////////////////////////////////////////
+	/**
+	  * Method To generate lookup array for dimentions , filters and metrics  .
+	  * @param <report_type> which identifies report type.
+	  * @return  array(columns fetched from DB.),
+	*/
+	/////////////////////////////////////////	
 	public function generateLookUP($report_type)
 	{
 		$getReportDetailsSql ="SELECT 

@@ -1,7 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /** --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
-| Author: Amin S
+| @Author: Amin S.
+| @Description : Autocomplete helper file.
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- **/
 function autocomplete_widget($table_name, $id){
 	$id = str_replace('"' , '', $id);

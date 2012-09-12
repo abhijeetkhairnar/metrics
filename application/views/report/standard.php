@@ -1,24 +1,14 @@
 <?php
-/********************************************************************************************************
- * 	standard.php - View file - standard() view in adopsreport controller - report/adopsreport.php
- *  CREATED BY	: AKSHAY SARDAR
- *  FOR 		: GLAM INDIA
- *  VERSION		: 1.0
- *  CREATED ON 	: 27 AUG 2012
- *  DESCRIPTION : THIS PHP FILE CONTENT THE VIEW FOR THE STANDARD REPORT PAGE
-********************************************************************************************************/
+/******************************************************
+*	FileName 	 : standard.php
+*	Created By 	 : Akshay Sardar.
+*	Created Date : 27 AUG 2012
+*	Description	 : standard view file.               
+******************************************************/ 
 ?>
-	<script type="text/javascript"  src="<?php echo base_url();?>public/js/jquery-ajaxddlist.js"></script>
-	<link type="text/css" rel="stylesheet" href="<?php echo base_url();?>public/css/multiselect-tree.css" />
+	<script type="text/javascript"  src="<?php echo base_url();?>public/js/dd-jquery.js"></script>
+	<link type="text/css" rel="stylesheet" href="<?php echo base_url();?>public/css/dd-style.css" />
 
-	<?php
-	 	$dimensions_data = @$_POST['dimensions_data'];
-		if(!$dimensions_data) $dimensions_data = '\'\'';
-	 	$metrics_data = @$_POST['metrics_data'];
-		if(!$metrics_data) $metrics_data = '\'\'';
-		$filters_data = @$_POST['filters_data'];
-		if(!$filters_data) $filters_data = '\'\'';
-	 ?>
 	<script language="javascript" type="text/javascript">
 		$(document).ready(function() {
 			$( "#start-date" ).datepicker({
@@ -32,33 +22,18 @@
 				buttonImageOnly: true
 			});	
 			
-			
-			$("#dimensions").ajaxddlist({ 
+			$( "#dimensions" ).dd({
 				source: "<?php echo base_url();?>index.php/report/adopsreport/getdimensions",
-				records:50,
-				selectedVals: '<?php echo @$_POST['dimensions_selected']; ?>',
-				selectedData: <?php echo stripslashes($dimensions_data); ?>,
-				leftSearchVal: '<?php echo @$_POST['dimensions_leftSearch']; ?>',
-				rightSearchVal: '<?php echo @$_POST['dimensions_rightSearch']; ?>'
-			});
-			
-			$("#metrics").ajaxddlist({ 
+				pagination: false
+			});			
+			$( "#metrics" ).dd({
 				source: "<?php echo base_url();?>index.php/report/adopsreport/getmetrics",
-				records:50,
-				selectedVals: '<?php echo @$_POST['metrics_selected']; ?>',
-				selectedData: <?php echo stripslashes($metrics_data); ?>,
-				leftSearchVal: '<?php echo @$_POST['metrics_leftSearch']; ?>',
-				rightSearchVal: '<?php echo @$_POST['metrics_rightSearch']; ?>'
-			});		
-			
-			$("#filters").ajaxddlist({ 
+				pagination: false
+			});
+			$( "#filters" ).dd({
 				source: "<?php echo base_url();?>index.php/report/adopsreport/getfilters",
-				records:50,
-				selectedVals: '<?php echo @$_POST['filters_selected']; ?>',
-				selectedData: <?php echo stripslashes($filters_data); ?>,
-				leftSearchVal: '<?php echo @$_POST['filters_leftSearch']; ?>',
-				rightSearchVal: '<?php echo @$_POST['filters_rightSearch']; ?>'
-			});					
+				pagination: false
+			})									
 			
 		});
 	</script>

@@ -1,5 +1,12 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+<?php 
+/******************************************************
+*	FileName 	 : reporthistory.php
+*	Created By 	 : Aksahy Sardar.
+*	Created Date : 25 Aug 2012.
+*	Description	 : Report History Controller file.
+*	Version 	 : 1.0                  
+******************************************************/
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Reporthistory extends CI_Controller {
 
 	function __construct(){
@@ -8,9 +15,14 @@ class Reporthistory extends CI_Controller {
 		// $this->load->model('report/adopsreport_model', 'adopsreport_model');		
     }
 	
+	/*********************************************
+	*	Created By 	 : Aksahy Sardar.
+	*	Created Date : 25 Aug 2012.
+	*	Description	 : Default report history controller.
+	*********************************************/	
 	function index()
 	{
-		$data['title'] = ucfirst('Report History'); // Capitalize the first letter	
+		$data['title'] = 'Report history';
 		
 		/**************************************************************************************/
 		/**************************************************************************************/		

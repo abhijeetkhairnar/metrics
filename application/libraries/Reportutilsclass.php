@@ -3313,6 +3313,7 @@ public static function getOptionList($sKey,$sClass=null,$sSelectedOption="",$bBl
 
 		public function ReportThroughAPI($reportArray,$functionCall)
 		{
+			error_log("calling!!!!","3","/glamadapt_files/log/adq/api_error.log");
 			/*
 			// Setting params
 			$wsdlFile = sfConfig::get('app_adq_api_wsdl');
@@ -3335,16 +3336,19 @@ public static function getOptionList($sKey,$sClass=null,$sSelectedOption="",$bBl
 			}
 			
 			*/
-			$uri = 'http://app69.glam.colo/glamadaptservices_qa/api/services/v1.0.3_sp2/v1.0.5/webservices/ReportService.php';
+			$uri = 'http://testapi-adapt.glam.colo/ews/ga/alpha/v1.2.0/Report/ReportService.php';
 			$instanceId = 1000;
 			$wsdlFile 	=	"/home/prod/www/metrics.glam.com/public/wsdl/glamadaptReportService_alpha.wsdl";
 			$user		= "abhijeetk";
 			$password	= "abhi@123";
 			$appId = 1;
 			
+			error_log("create soap object!!!!","3","/glamadapt_files/log/adq/api_error.log");
+			
 			// Creating Client
 			$client = new SoapClient($wsdlFile, array('cache_wsdl' => WSDL_CACHE_NONE, 'trace' => 1));
 
+			error_log(print_r($client),"3","/glamadapt_files/log/adq/api_error.log");
 
 			// Setting Soap Headers
 			$soapHeaders = array();
@@ -3355,7 +3359,7 @@ public static function getOptionList($sKey,$sClass=null,$sSelectedOption="",$bBl
 			$soapHeaders[] = new SoapHeader($uri, 'transactionId', array(), true);
 			$client->__setSoapHeaders($soapHeaders);
 			
-			
+			error_log("$functionCall!!!!","3","/glamadapt_files/log/adq/api_error.log");
 			try{
 				if($functionCall=='getReportResult')
 				{
@@ -3452,7 +3456,6 @@ public static function getOptionList($sKey,$sClass=null,$sSelectedOption="",$bBl
 			$CI =& get_instance();
 			$CI->load->model('report/campaign_model', 'campaign_model');
 			$returnvalue = $CI->campaign_model->generateLookUP($report_type);
-			echo "<pre>"; print_r($returnvalue); echo "</pre>";
 			unset($CI);
 			return $returnvalue;
 		}
@@ -4940,9 +4943,8 @@ public static function getCountryByIds($CountryIds)
 	}
 
 	public function dataProcess($aRecordData,$action)
-		{
+	{
 			$reportData = new stdClass();
-			
 			if(isset($aRecordData['id']))
 			{
 				$reportData->id = $aRecordData['id'];
@@ -4983,9 +4985,9 @@ public static function getCountryByIds($CountryIds)
 				$reportData->isShared = $aRecordData['iReportSharing'];
 			}
 
-			if(isset($aRecordData['frequencytype']))
+			if(isset($aRecordData['frequencyType']))
 			{
-				$reportData->frequencyType = $aRecordData['frequencytype'];
+				$reportData->frequencyType = $aRecordData['frequencyType'];
 			}
 			
 			if(isset($aRecordData['frequencyval']))
@@ -5040,8 +5042,6 @@ public static function getCountryByIds($CountryIds)
 			}
 
 			$reportData->isIncHeader = $aRecordData['INCLUDE_HEADER'];
-		
-			$counter = 1;
 			
 			foreach($aRecordData['DIMENSION_LIST'] AS $KeysDimension=>$ValsDimension)
 		 	{
@@ -5060,12 +5060,13 @@ public static function getCountryByIds($CountryIds)
 				$reportDetail{$counter}->metaType = 'M';
 				$reportDetails[] = $reportDetail{$counter};
 		 	}
-					
+			
 			$countFilter= count($aRecordData['FILTER_LIST']);
 			$aLookUP = array();
+			
 			$aLookUP = self::generateLookUP($aRecordData['iReportType']);
-			if($countFilter>0)
-			{
+			
+			if($countFilter>0){
 			
 				/*
 					Currently $aLookUP dont have 'G' and 'L' runtype support, So if our report is of type 'G' or 'L'..
@@ -5077,8 +5078,9 @@ public static function getCountryByIds($CountryIds)
 					$finalLookUp = $aLookUP[$aRecordData['RUN_TYPE']]['F'];
 				}
 		
-				$transfrArr  = array_flip($finalLookUp);				
-	
+				$transfrArr  = array_flip($finalLookUp);	
+
+					
 				foreach($aRecordData['FILTER_LIST'] AS $KeysFilter=>$ValsFilter)
 				{
 					foreach($ValsFilter AS $keys=>$vals)
@@ -5091,56 +5093,7 @@ public static function getCountryByIds($CountryIds)
 							}
 							$vals = "'".str_replace(",", "','", $vals)."'";
 						}
-			
-						//
-						if($keys=='ADM_ADS.META_COUNTRY')
-						{
-							$vals = ReportUtils::getMetaCountryByNames($vals);
-						}
-
-						if($keys=='INCLUDE_AFFILIATE_LIST' ||
-							$keys=='EXCLUDE_AFFILIATE_LIST' )
-						{
-							//$vals = ReportUtils::getIncludeAffByNames($vals);
-						}
-				
-						if($keys=='ADQ_AFFILIATE.COUNTRY_CONTRACT')
-						{
-							$vals = self::getCountryByNames($vals);
-						}
-
-						if($keys=='AGG.INCLUDE_FLAGS' || $keys=='AGG.EXCLUDE_FLAGS' )
-						{
-							$vals = self::getImpressionFlagByNames($vals);
-						}
-
-						if($keys=='AGG.TAG_TYPE')
-						{
-							$vals = self::getTagTypeByNames($vals);
-						}
-
-						
-						if($keys=='AGG.IS_ATF')
-						{
-							$vals = self::getATFByNames($vals);
-						}
-		
-						if($keys=='AGG.GA_BROWSER_ID')
-						{
-							$vals = self::getBrowserByNames($vals);
-						}
-
-						
-						if($keys=='AGG.GA_CITY')
-						{
-							$vals = self::getCityByNames($vals);
-						}
-						
-						if($keys=='UPPER(ADM_ADS.AD_SIZE_ID)')
-						{
-							$vals = strtoupper($vals);
-						}
-						
+									
 						$transformedKey = $transfrArr[$keys];
 						
 						if($transformedKey!='')
@@ -5158,34 +5111,24 @@ public static function getCountryByIds($CountryIds)
 					}
 				}				
 			}
-				
-				$finalLookUp = $aLookUP['TIMEZONE']['T'];
-				$transfrArr  = array_flip($finalLookUp);	
-				$reportDetail{$counter} = new stdClass();
-				$reportDetail{$counter}->columnName = $transfrArr[$aRecordData['TIME_ZONE']];
-				$reportDetail{$counter}->columnVal = $aRecordData['TIME_ZONE'];
-				
-				$reportDetail{$counter}->metaType = 'T';
-				$reportDetails[] = $reportDetail{$counter};
-
-				//echo $keys;
-				//exit;
-				
-				
+			
+			$finalLookUp = $aLookUP['TIMEZONE']['T'];
+			$transfrArr  = array_flip($finalLookUp);
+			$reportDetail{$counter} = new stdClass();
+			$reportDetail{$counter}->columnName = $transfrArr[$aRecordData['TIME_ZONE']];
+			$reportDetail{$counter}->columnVal = $aRecordData['TIME_ZONE'];	
+			$reportDetail{$counter}->metaType = 'T';			
+			$reportDetails[] = $reportDetail{$counter};
 			
 			if(isset($aRecordData['REPORT_DESC']))
 			{
 				$reportData->reportDesc = $aRecordData['REPORT_DESC'];
-			}
-
+			}			
+			
 			$report = new stdClass();
 			$report->reportData = $reportData;
 			$report->reportDetails = $reportDetails;
-		
-			echo "<pre>";
-			print_r($report)
-				exit;
-			return $report;
-		}
-
+			
+			return $report;		
+	}
 }

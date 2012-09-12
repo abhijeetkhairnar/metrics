@@ -1,5 +1,10 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+/******************************************************
+*	FileName 	 : log4php_helper.php
+*	Created By 	 : Amin S.
+*	Created Date : 30 Aug 2012.
+*	Description	 : Log helper file.           
+******************************************************/
 if ( ! function_exists('log_error') ) {
 	function log_error($message) {
 		static $_log;

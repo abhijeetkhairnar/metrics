@@ -1,12 +1,11 @@
-<?php
-/********************************************************************************************************
- * 	reporthistory.php - View file -  Controller - history/reporthistory.php
- *  CREATED BY	: AKSHAY SARDAR
- *  FOR 		: GLAM INDIA
- *  VERSION		: 1.0
- *  CREATED ON 	: 04 Sept 2012
- *  DESCRIPTION : THIS PHP FILE CONTENT THE VIEW FOR THE REPORT HISTORY PAGE
-********************************************************************************************************/
+<?php 
+/******************************************************
+*	FileName 	 : dashboard.php
+*	Created By 	 : Aksahy Sardar.
+*	Created Date : 25 Aug 2012.
+*	Description	 : report history view file.       
+******************************************************/
+
 error_reporting(E_ALL ^ E_NOTICE);
 //if (!isset($reportTypeArr['Product Report'])){
 	$reportTypeArr['Product Report'] = "''";

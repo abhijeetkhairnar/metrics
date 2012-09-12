@@ -1,11 +1,11 @@
 <?php
-/********************************************************************************************************
- * 	campaign.php - View file -  Controller - adopsreport/adopsreport.php
- *  CREATED BY	: AMin S
- *  FOR 		: GLAM INDIA
- *  VERSION		: 1.0
- *  CREATED ON 	: 04 Sept 2012
- ********************************************************************************************************/
+/******************************************************
+*	FileName 	 : campaign.php
+*	Created By 	 : Amin S.
+*	Created Date : 04 Sept 2012.
+*	Description	 : campaign view file.               
+******************************************************/ 
+ 
 error_reporting(E_ALL ^ E_NOTICE);
 //if (!isset($reportTypeArr['Product Report'])){
 	$reportTypeArr['Product Report'] = "''";
@@ -192,7 +192,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 				<div id="form-group-3">
 					<div class="row">
 						<label for="predefined">
-							<input type="radio" name="_predefined" id="_predefined">
+							<input type="radio" name="timeRange" id="_predefined">
 							Predefined
 						</label> 
 						<div class="input-div">
@@ -210,7 +210,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 					</div>
 					<div class="row">
 						<label for="last">
-							<input type="radio" name="_last" id="_last">
+							<input type="radio" name="timeRange" id="_last">
 							Last
 						</label> 
 						<div class="input-div">
@@ -223,7 +223,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 					</div>
 					<div class="row">
 						<label for="custom">
-							<input type="radio" name="_custom" id="_custom">
+							<input type="radio" name="timeRange" id="_custom">
 							Custom
 						</label> 
 						<div class="input-div">
