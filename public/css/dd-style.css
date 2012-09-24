@@ -67,13 +67,14 @@ width: 16px;
 background-position: -16px -128px;
 cursor: pointer;
 display: block;
-float: right;
+float: left;
+margin:0px 2px;
 }
 .ui-icon-minus{
 background-position:-48px -128px;
 cursor: pointer;
 display: block;
-float: right;
+float: left;
 }
 .ui-icon-close{
 background-position: -80px -128px;
@@ -92,4 +93,12 @@ width:658px;
 height:190px;
 left:0px;
 top:0px;
+}
+.advance-div div.row{
+padding:10px 0px;
+}
+/***** can delete after demo*****/
+.advance-div div label{
+width:100px;
+float:left;
 }

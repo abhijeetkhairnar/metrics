@@ -35,38 +35,71 @@ class Adopsreport extends CI_Controller {
 	*********************************************/	
 	function standard()
 	{	
+		
 		$this->load->helper('log4php');
 		$this->load->helper('form');
 		$this->load->library('form_validation');		
-		
+			
 		log_info('Into the standard report controller');
-		
 		$data['title'] = 'Standard report';
+		//-- Hard Code entry for testing only --//
+		$data['report_type'] = '1';				
 
-		$this->form_validation->set_rules('report-name', 'Report name', 'required');
-		$this->form_validation->set_rules('description', 'Description', 'required');
+		$this->form_validation->set_rules('report_name', 'Report name', 'required');
+		$this->form_validation->set_rules('report_desc', 'Description', 'required');
 		
-			if ($this->form_validation->run() === FALSE){
-				$this->load->template('report/standard' , $data);						
+		if (isset($_POST)){
+			$_POST = self::__unsetPostData($_POST);
+			$this->load->helper('process_data');
+			log_info("Add process data helper");
+			$tempArr = dataProcess_helper($_POST);
+						
+			if ($this->form_validation->run() === FALSE){		
+				//$formData  =  self::__setFormData($_POST);
 			}else{
-				unset($_POST['dimensions_left_search']);
-				unset($_POST['dimensions_right_search']);
-				unset($_POST['dimensions_right_chk']);
-				unset($_POST['dimensions_right_chk_chk']);
-												
-				unset($_POST['metrics_left_search']);				
-				unset($_POST['metrics_right_search']);
-				unset($_POST['metrics_right_chk']);
-				unset($_POST['metrics_right_chk_chk']);
+				if (isset($_POST['save'])){
+					$_POST['is_run_report'] = 0;
+					$_POST['start_date']	=  date('d-M-y');
+					$_POST['end_date']		=  date('d-M-y');
+					unset($_POST['save']);
+				}else if (isset($_POST['run'])){
+					$_POST['is_run_report'] = 1;
+					unset($_POST['run']);
+				}
 								
-				unset($_POST['filters_left_search']);
-				unset($_POST['filters_right_search']);
-				unset($_POST['filters_right_chk']);
-				unset($_POST['metrics_right_chk_chk']);
 				
-				echo "<pre>"; print_r($_POST); exit;
-			}	
+		//		$status = $this->adopsreport_model->saveReport($tempArr);
+		//		echo "status--".$status;			
+			}
+			$data  =  self::__setFormData($tempArr);	
+		}		
+		$this->load->template('report/standard' , $data);	
+}
+
+	/*********************************************
+	*	Created By 	 : Amin.
+	*	Created Date : 20 Sep 2012.
+	*	Description	 : Remove unwanted Information from 
+						post variable
+	*********************************************/	
+	
+	function __unsetPostData(& $postData){	
+		foreach($postData as $key => $val){
+			
+			if(preg_match('/_left_search$/', $key)){	
+				unset($postData[$key]);
+			}if(preg_match('/_right_search$/', $key)){			
+				unset($postData[$key]);
+			}if(preg_match('/_left_chk$/', $key)){			
+				unset($postData[$key]);
+			}
+		}
+		unset($postData['dimensions_left_chk']);
+		unset($postData['metrics_left_chk']);
+		unset($postData['filters_left_chk']);	 
+		return $postData;
 	}
+	
 	
 	/*********************************************
 	*	Created By 	 : Amin.
@@ -183,7 +216,7 @@ class Adopsreport extends CI_Controller {
 	*	Created Date : 25 Aug 2012.
 	*	Description	 : Controller to get dimensions in json format for DD creation.
 	*********************************************/		
-	function getdimensions(){
+	function getDimensions(){
 		echo $json_dimensions = json_encode($this->adopsreport_model->getDimensions());		
 		exit;
 	}
@@ -193,7 +226,7 @@ class Adopsreport extends CI_Controller {
 	*	Created Date : 25 Aug 2012.
 	*	Description	 : Controller to get metrics in json format for DD creation.
 	*********************************************/	
-	function getmetrics(){
+	function getMetrics(){
 		echo $json_metrics = json_encode($this->adopsreport_model->getMetrics());		
 		exit;
 	}	
@@ -203,11 +236,29 @@ class Adopsreport extends CI_Controller {
 	*	Created Date : 25 Aug 2012.
 	*	Description	 : Controller to get filters in json format for DD creation.
 	*********************************************/	
-	function getfilters(){
+	function getFilters(){
 		echo $json_filters = json_encode($this->adopsreport_model->getFilters());		
 		exit;
 	}
+	
+	/*********************************************
+	*	Created By 	 : Aksahy Sardar.
+	*	Created Date : 25 Aug 2012.
+	*	Description	 : 
+	*********************************************/	
+	function getFilterInput(){
+		$filters_type = $this->adopsreport_model->getFilterInput();		
+		echo 'ListBox';
+	}	
+	
+	function getFilterData(){
+		$content =	$this->adopsreport_model->getFilterData();		
+	}
 
+	function getFilterDataJson(){
+		echo $json_content = json_encode($this->adopsreport_model->getFilterData());		
+		exit;
+	}	
 	/*********************************************
 	*	Created By 	 : Amin.
 	*	Created Date : 25 Aug 2012.
@@ -217,5 +268,22 @@ class Adopsreport extends CI_Controller {
 		$this->load->model('report/campaign_model', 'campaign_model');	
 		echo $autocompleteData = json_encode($this->campaign_model->getAdIds());
 		exit;
+	}
+	
+	/*********************************************
+	*	Created By 	 : Amin.
+	*	Created Date : 21 Sep 2012.
+	*	Description	 : set Form Data
+	*********************************************/
+	function __setFormData($tempArr = array()){
+	
+		$reportHeader = array_combine($tempArr['reportDataKey'], $tempArr['reportDataVal']);
+		
+	//	echo "<pre>"; print_r($tempArr['dimension']); echo "</pre>"; exit;
+		$reportDetailsDimensions['dimensions']	= $this->adopsreport_model->getLabelnIdMappingForDD($tempArr['dimension']);
+		
+		//echo "<pre>"; print_r($reportDetailsDimensions); exit;
+		
+		
 	}
 }

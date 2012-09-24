@@ -1,6 +1,6 @@
 #menu {
 	list-style:none;
-	background-color:#D6D5D4;
+	background-color:#F3F3F4;
 	display:table;	
 	margin:0px auto 0px auto;
 	height:30px;
@@ -14,7 +14,7 @@
 	padding: 6px 10px;
 	border:none;
 	margin:5px 0px 0px 0px;
-	color: #E87E92;
+	color: #45C9FE;
 
 }
 
@@ -25,7 +25,7 @@
 	background: #D6D5D4;
 }
 #menu li a {
-   color: #E87E92;
+   color: #45C9FE;
     display: block;
     font-family: Arial,Helvetica,sans-serif;
     font-size: 12px;
@@ -36,11 +36,11 @@
 
 #menu li:hover a {}
 #menu li .drop {
-	background: url("../images/drop.png") no-repeat scroll right 4px transparent;
-    padding-right: 21px;
+	background: url("../images/down-arrow.png") no-repeat scroll right center transparent;
+    padding-right: 20px;
 }
 #menu li:hover .drop {
-	 background: url("../images/drop.png") no-repeat scroll right 4px transparent;
+	 background: url("../images/down-arrow.png") no-repeat scroll right center transparent;
 }
 
 .dropdown_columns
@@ -77,7 +77,7 @@
 #menu li .dropdown_columns ul li a{
 	font-size:11px;
 	font-weight:bold; 
-	color: #E87E92;
+	color: #45C9FE;
 	padding:5px;
 	text-align:left;
 }
