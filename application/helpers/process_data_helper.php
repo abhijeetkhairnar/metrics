@@ -49,7 +49,11 @@ function dataProcess_helper($form_data = array()){
 		if (is_array($filters)){
 			foreach($filters as $key => $val){
 				if (isset($form_data[$val])){
-					$filterData[$val] = implode("," , $form_data[$val]); 
+					if (is_array($form_data[$val])){
+						$filterData[$val] = implode("," , $form_data[$val]); 
+					}else{
+						$filterData[$val] = $form_data[$val]; 
+					}					
 					unset($form_data[$val]);									
 				}	
 			}

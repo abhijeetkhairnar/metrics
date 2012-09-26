@@ -101,7 +101,7 @@ class My_Model extends CI_Model {
 	*	Description	 : Save report.
 	*********************************************/		
 	public function saveReport(& $reportInfo = array()){
-		$conn = self::__adq2anywhere();		
+		$conn = self::__adqConnection();		
 			
 		$gr_report_data_key		=	$reportInfo['reportDataKey']; 
 		$gr_report_data_data	=	$reportInfo['reportDataVal'];

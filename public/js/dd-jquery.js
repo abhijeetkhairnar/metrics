@@ -25,7 +25,7 @@
 		_loadData: function(data,pid){
 			var self = this;
 			if(!pid){
-				$.each(data, function(i,item) {
+				$.each(data, function(i,item) { 
 					var expandChild = "";
 					var hideParentchk = "";
 					var childrenHtml = "";
@@ -64,13 +64,14 @@
 				if(self.options.rightSideData){
 					var data = self.options.rightSideData;
 					$.each(data, function(i,item) {						
-						if(item.parentid != 0){
-							$('#'+self.id+'_right_ul').append('<li class="dd_left_ul_li_'+item.parentid+'_ul_li_'+item.id+'"><input type="hidden" name="'+self.id+'['+item.parentid+'][]" value="'+item.id+'" class="'+self.id+'_chk_chk"/>'+item.text+'<span class="ui-icon ui-icon-close"></span></li>');							
+						if(item.parentid != 0 || item.parentid == null){
+							$('#'+self.id+'_right_ul').append('<li class="'+self.id+'_left_ul_li_'+item.parentid+'_ul_li_'+item.id+'"><input type="hidden" name="'+self.id+'['+item.parentid+'][]" value="'+item.id+'" class="'+self.id+'_chk_chk"/>'+item.text+'<span class="ui-icon ui-icon-close"></span></li>');							
 						}else{
 							$('#'+self.id+'_right_ul').append('<li class="'+self.id+'_left_ul_li_'+item.id+'"><input type="hidden" name="'+self.id+'[]" value="'+item.id+'" class="'+self.id+'_chk" />'+item.text+'<span class="ui-icon ui-icon-close"></span></li>');
 						}
 					});
 				}
+
 				
 				if(self.options.pagination){
 					 // LAZY LOAD ON SCROLL
@@ -148,8 +149,7 @@
 					  
 					   $(this).parent().remove();
 					   $('#'+self.id+'_left_ul li.'+$(this).parent().attr('class')+' input[type=checkbox]').attr('checked',false);
-					   $('#'+self.id+'_left_ul li.'+$(this).parent().attr('class')).css('background-color','#FFF');
-					   
+					   $('#'+self.id+'_left_ul li.'+$(this).parent().attr('class')).css('background-color','#FFF');					   
 				});
 				
 				$('#'+self.id+' .dd-left-search').live("keyup", function() {
@@ -173,7 +173,6 @@
 				});		
 				
 				/*********** CSS li:hovers related - START ***********/
-				/*
 				$('#'+self.id+'_left ul li').live("hover", function() {															  
 					if(($('.'+$(this).attr('class')+' .chk_span input[type=checkbox]').is(':checked') == false) && ($(this).has("ul").length >= 1)){
 						$(this).css('background-color','#FFEEDD');
@@ -201,8 +200,7 @@
 				});	
 				$('#'+self.id+'_right ul li').live("mouseleave", function() {		
 					$(this).css('background-color','');
-				});
-				*/
+				});				
 				/************************** END **************************/				
 				
 		},

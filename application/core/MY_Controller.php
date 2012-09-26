@@ -10,6 +10,8 @@
 
 // ------------------------------------------------------------------------
 
+error_reporting(E_ERROR | E_WARNING | E_PARSE);	// Report simple running errors
+
 class My_Controller extends CI_Controller {
 
     function __construct(){

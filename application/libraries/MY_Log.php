@@ -27,6 +27,7 @@ class MY_Log extends CI_Log {
 	}
 	
 	public function write_log($level = 'error', $msg, $php_error = FALSE) {
+		
 		if ($this->_enabled === FALSE) {
 			return FALSE;
 		}
@@ -37,17 +38,24 @@ class MY_Log extends CI_Log {
 			return FALSE;
 		}
 		
+		$epoc 	= 	time();
+		$txtnid =	$epoc ."-". $_SERVER["HTTP_HOST"] ."-".rand (1, 1000);	
+		
 		switch ($level) {
-			case 'ERROR':
+			case 'ERROR':				
+				$msg = '"host":"'.$_SERVER["HTTP_HOST"].'", "date":"'.$epoc.'", "app_name":"adq", "log_type":"error", "txnid":"'.$txtnid.'", "msg":"'.stripslashes($msg).'"';		
 				$this->logger->error($msg);
 				break;
 			case 'INFO':
+				$msg = '"host":"'.$_SERVER["HTTP_HOST"].'", "date":"'.$epoc.'", "app_name":"adq", "log_type":"info", "txnid":"'.$txtnid.'", "msg":"'.stripslashes($msg).'"';
 				$this->logger->info($msg);
 				break;
 			case 'DEBUG':
+				$msg = '"host":"'.$_SERVER["HTTP_HOST"].'", "date":"'.$epoc.'", "app_name":"adq", "log_type":"debug", "txnid":"'.$txtnid.'", "msg":"'.stripslashes($msg).'"';
 				$this->logger->debug($msg);
 				break;
 			default:
+				$msg = '"host":"'.$_SERVER["HTTP_HOST"].'", "date":"'.$epoc.'", "app_name":"adq", "log_type":"warning", "txnid":"'.$txtnid.'", "msg":"'.stripslashes($msg).'"';
 				$this->logger->debug($msg);
 				break;
 		}

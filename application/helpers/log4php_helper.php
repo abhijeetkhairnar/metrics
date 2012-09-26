@@ -6,6 +6,7 @@
 *	Updated Date : 21 Sept 2012.
 *	Description	 : Log helper file.           
 ******************************************************/
+
 if ( ! function_exists('log_error') ) {
 	function log_error($message) {
 		static $_log;

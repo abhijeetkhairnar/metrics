@@ -6,7 +6,7 @@
 *	Description	 : Report Controller file.
 *	Version 	 : 1.0                  
 ******************************************************/
-error_reporting(E_ERROR | E_WARNING | E_PARSE);	// Report simple running errors
+
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Adopsreport extends CI_Controller {
 
@@ -50,12 +50,13 @@ class Adopsreport extends CI_Controller {
 		
 		if (isset($_POST)){
 			$_POST = self::__unsetPostData($_POST);
+			
 			$this->load->helper('process_data');
 			log_info("Add process data helper");
 			$tempArr = dataProcess_helper($_POST);
-						
+		//	echo "<pre>"; print_r($tempArr); echo "</pre>";			
 			if ($this->form_validation->run() === FALSE){		
-				//$formData  =  self::__setFormData($_POST);
+				//$data  =  self::__setFormData($tempArr);
 			}else{
 				if (isset($_POST['save'])){
 					$_POST['is_run_report'] = 0;
@@ -66,12 +67,13 @@ class Adopsreport extends CI_Controller {
 					$_POST['is_run_report'] = 1;
 					unset($_POST['run']);
 				}
-								
+				$data  =  self::__setFormData($tempArr);				
 				
 		//		$status = $this->adopsreport_model->saveReport($tempArr);
 		//		echo "status--".$status;			
-			}
-			$data  =  self::__setFormData($tempArr);	
+			}	
+			//$data  =  self::__setFormData($tempArr);
+			//echo "<pre>"; print_r($data); echo "</pre>";
 		}		
 		$this->load->template('report/standard' , $data);	
 }
@@ -248,7 +250,11 @@ class Adopsreport extends CI_Controller {
 	*********************************************/	
 	function getFilterInput(){
 		$filters_type = $this->adopsreport_model->getFilterInput();		
-		echo 'ListBox';
+		if (strtolower($filters_type) == 'textbox'){
+			echo $html = '<input type="text" name="'.$_REQUEST['id'].'" id="'.$_REQUEST['id'].'" value="" size="50">';
+		}else{			
+			echo 'ListBox';
+		}
 	}	
 	
 	function getFilterData(){
@@ -276,14 +282,33 @@ class Adopsreport extends CI_Controller {
 	*	Description	 : set Form Data
 	*********************************************/
 	function __setFormData($tempArr = array()){
-	
+		
 		$reportHeader = array_combine($tempArr['reportDataKey'], $tempArr['reportDataVal']);
+		$reportDetailsDimensions		= json_encode($this->adopsreport_model->getLabelnIdMappingForDD($tempArr['dimension']));
+		$reportDetailsMetrics			= json_encode($this->adopsreport_model->getLabelnIdMappingForDD($tempArr['metrics']));
+		$reportDetailsFilters			= json_encode($this->adopsreport_model->getLabelnIdMappingForDD($tempArr['filtersDataKey']));
 		
-	//	echo "<pre>"; print_r($tempArr['dimension']); echo "</pre>"; exit;
-		$reportDetailsDimensions['dimensions']	= $this->adopsreport_model->getLabelnIdMappingForDD($tempArr['dimension']);
+		$reportFilterBody = array_combine($tempArr['filtersDataKey'], $tempArr['filtersDataVal']);	
 		
-		//echo "<pre>"; print_r($reportDetailsDimensions); exit;
+		foreach($reportFilterBody as $key => $val){			
+			$filterFieldType = $this->adopsreport_model->getFilterInput($key);				
+			if (strtolower($filterFieldType) == 'textbox'){
+				$reportFiltersBody[$key] = $val;
+			}else if (strtolower($filterFieldType) == 'listbox'  ||  strtolower($filterFieldType) == 'search'){
+				//$selectedFilterArr = explode(',', $val);
+				$reportFiltersBody[$key] = json_encode($this->adopsreport_model->getSelectedFilterData($key, $val));
+			}
+		}
 		
+		$reportData = array ("reportHeader" => $reportHeader, 
+							 "dimensions" 	=>$reportDetailsDimensions, 
+							 "metrics" 		=>$reportDetailsMetrics, 
+							 "filtersDataKey" =>$reportDetailsFilters,
+							 "reportFiltersBody" => $reportFiltersBody);
+							 
+
 		
-	}
+		echo "<pre>"; print_r($reportData); echo "</pre>";
+		return $reportData;
+	}	
 }

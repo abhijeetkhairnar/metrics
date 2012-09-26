@@ -197,7 +197,7 @@ text-align:right;
 border-top:1px solid #D6D5D4;
 border-bottom:1px solid #D6D5D4;
 }
-#form-div .form-data .form-group .form-inner-head span.inner-head{
+#form-div .form-data .form-group span.inner-head{
 font-size:14px;
 font-weight:bold;
 padding-right:20px;
@@ -214,8 +214,8 @@ line-height:20px;
 }
 #form-div .form-data .row label{
 float:left;
-width:250px;
-padding:0px 20px 0px 40px;
+width:200px;
+padding:0px 20px;
 }
 #form-div .form-data .row div.input-div{
 float:left;
@@ -224,9 +224,10 @@ float:left;
 text-align:center;
 }
 input[type="submit"],input[type="button"]{
-	background-color: #45C9FE;
+/*	background-color: #45C9FE;
 	border: 1px solid #424343;
 	border-radius: 5px 5px 5px 5px;
+*/
 	color: #424343;
 	padding: 4px 6px;
 	font-size:12px;
@@ -255,8 +256,29 @@ border:1px solid #DDDDDD;
 select,textarea,input[type="text"],input[type="password"]{
 border:1px solid #DDDDDD;
 }
+.boldCls{
+font-weight:bold;
+}
+/******************************/
+#popupbox{
+position:fixed;
+top:0px;
+left:0px;
+width:100%;
+background-color:rgba(69, 69, 69, 0.7);
+z-index: 199;
+display:none;
+}
+.popupbox-800{
+	width: 750px;
+	border: 1px solid #000;
+    padding: 10px;
+	margin:150px auto;
+	background:#fff;
+}
 
 
+/******************************/
 .ui-autocomplete {
 	max-height: 100px;
 	overflow-y: auto;
