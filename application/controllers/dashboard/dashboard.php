@@ -6,18 +6,13 @@
 *	Description	 : Dashboard Controller file.
 *	Version 	 : 1.0                  
 ******************************************************/
-session_start();
+
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Dashboard extends My_Controller {
 
 	function __construct(){
             parent::__construct();
             $this->load->helper('url');	
-            
-            if (empty($_SESSION['user_name'])){
-                redirect('login/login/');
-            }
-           
 	}
 
 	/*********************************************
