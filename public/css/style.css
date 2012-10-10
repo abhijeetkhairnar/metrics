@@ -3,7 +3,7 @@
  *  CREATED BY	: AKSHAY SARDAR
  *  FOR 		: GLAM INDIA
  *  VERSION		: 1.0
- *  CREATED ON 	: 21 AUG 2012
+ *  CREATED ON 	: 27 SEPT 2012
  *  DESCRIPTION : THIS CSS FILE CONTENT ALL THE MAIN TEMPLATE AND LAYOUT CSS.
 ********************************************************************************************************/
 html,body { 
@@ -14,79 +14,213 @@ body,h1,h2,h3,h4,h5,h6{
 	margin:0px;
 	font-family:Arial, Helvetica, sans-serif;
 	font-size:12px;
-	color:#424343;
+	color:#6A7677;
 	}
- ul,li{
+ul,li{
 	margin:0px;
 	padding:0px;
 	list-style:none;
 }
 a{
-	color:#45C9FE;
+	color:#54C6FC;
 	text-decoration: none;
 }
 a:hover{
 	text-decoration: underline;
-	}
-#main-container{
-	margin:10px;
-	}
+}
+/****************************/
+/*		HEADER CSS - START	*/
+/****************************/
+
 #header{
-margin-bottom:10px;
-}	
-#header-top{
-	height:20px;
-	padding:5px 10px;
-	background-color:#424343;
-	color:#fff;
-	line-height:20px;
-	margin-bottom:10px;
-	}
-#header-top-left{
-	float:left;
-	}
-#header-top-left h1{
-	font-size:16px;
-	color:#fff;
-	}	
-#header-top-right{
-	float:right;
-	font-weight:bold;
-	}
-#header-bottom{
+background-color:#060808;
+}
+#inner-header{
+overflow:hidden;
+margin:0px auto;
+padding:10px 0px;
+width:1024px;
+}
+#logo{
+color:#FF123C;
+text-decoration:none;
+font-size:26px;
+}
+#logo span{
+font-size:12px;
+color:#8BA0A3;
+}
+.header-user-name{
+color:#fff;
+font-weight:bold;
+padding-right:10px;
+}
+.bold-cls{
+font-weight:bold;
+}
+.separator{
+padding:0px 20px;
+}
+#header-top-left {
+    float: left;
+	width:600px
+}
+#header-top-right {
+    float: left;
+    font-weight: bold;
+	padding-top: 12px;
+	text-align:right;
+	width:424px;
+}
+
+/****************************/
+/*		HEADER CSS - END	*/
+/****************************/
+
+/****************************/
+/*		MIDDLE CSS - START	*/
+/****************************/
+#middle{
+margin:20px auto;
+width:1024px;
+}
+#middle-body {
 background-color:#F3F3F4;
+}
+.page-title{
+padding-bottom:10px;
+font-size:16px;
+}
+/****************************/
+/*		MENU CSS - END	*/
+/****************************/
+/*
+#menu{
+width:100%;
+overflow:hidden;
+background-color:#D6D5D4;
+}
+#menu li a{
+color:#6A7677;
+font-size:14px;
+font-weight:bold;
+line-height:16px;
+float:left;
+padding:10px;
+text-transform:uppercase;
+text-decoration:none;
+border-right:1px solid #F5F9F8;
+width:31%;
+text-align:center;
+}
+#menu li a:active{
+background-color:#F5F9F8;
+}
+#menu li a:hover{
+background-color:#424343;
+color:#F5F9F8;
 }
 #menu-div{
-
+border-bottom:2px solid #FFF;
 }
-#middle{
-min-height:500px;
+*/
+/****************************/
+/*		MENU CSS - END	*/
+/****************************/
+#middle-container{
 padding:20px;
-background-color:#F3F3F4;
+min-height: 400px;
 }
-	
+h2.form-title{
+font-size:16px;
+color:#6A7677;
+padding-bottom:10px;
+}
+div.action-button{
+padding:10px 0px; 
+}
+div.form-group{
+background-color:#D6D5D4;
+margin-bottom:3px;
+padding:10px;
+}
+div.form-group-body{
+background-color:#FFF;
+}
+.form-inner-head{
+padding:0px 0px 10px 0px;
+font-weight:bold;
+}
+span.inner-head{
+font-size:14px;
+font-weight:bold;
+color:#6A7677;
+padding-right:20px;
+}
+div.form-group-body .row{
+padding:10px 20px;
+overflow:hidden;
+}
+div.form-group-body .row label{
+float:left;
+width:200px;
+}
+div.form-group-body .row .input-div{
+float:left;
+}
+input[type="submit"],input[type="button"]{
+	color: #424343;
+	padding: 4px 6px;
+	font-size:12px;
+	margin:0px 5px;
+}
+select,textarea,input[type="text"],input[type="password"]{
+border:1px solid #DDDDDD;
+margin:0px;
+}
+.boldCls{
+font-weight:bold;
+}
+/****************************/
+/*		LOGIN BOX CSS - END	*/
+/****************************/
+#login-form{
+width:400px;
+border:1px solid #D6D5D4;
+margin:50px auto;
+background-color:#FFF;
+padding:20px;
+}
+/****************************/
+/*		LOGIN BOX CSS - END	*/
+/****************************/
+
+
+
+
+/****************************/
+/*		MIDDLE CSS - END	*/
+/****************************/
+
 #footer{
 padding:10px;
-background-color:#F3F3F4;
 }
 #copyright{
 font-size:10px;
-text-align:center;
+text-align:right;
 font-weight:bold;
 }
-#middle .page-title{
-font-size:16px;
-padding-bottom:10px;
-}
-#middle .inner-title{
-font-size:13px;
-padding-bottom:5px;
-}
+
+
+/************************************/
+/*			Dashboard				*/
+/************************************/
+
 #dashbord-left{
-width:500px;
-border:1px solid #424343;
+width:380px;
+border:1px solid #D6D5D4;
 float:left;
-margin-right:50px;
+margin-right:20px;
 margin-bottom:20px;
 border-radius:5px;
 background-color:#fff;
@@ -94,8 +228,8 @@ padding:10px;
 min-height:200px;
 }
 #dashbord-right{
-width:600px;
-border:1px solid #424343;
+width:538px;
+border:1px solid #D6D5D4;
 float:left;
 border-radius:5px;
 background-color:#fff;
@@ -113,10 +247,10 @@ padding:20px;
 padding-bottom:15px;
 }
 #summary-count-warrper .grey-box{
-width:200px;
-background-color:#F3F3F4;
-margin:10px 25px 20px 25px;
-float:left;
+background-color: #F3F3F4;
+float: left;
+margin: 20px;
+width: 150px;
 }
 #summary-count-warrper .grey-box .count-val{
 color:#45C9FE;
@@ -134,13 +268,13 @@ background-color:#D6D5D4;
 overflow:hidden
 }
 #report-favorites-div{
-padding:10px 20px;
+padding:10px;
 }
 #report-favorites-div .report-favorites-row{
 border:1px solid #D6D5D4;
 background-color:#F3F3F4;
 min-height:100px;
-padding:20px;
+padding:10px;
 margin-bottom:20px;
 }
 div.add-favorites-report{
@@ -165,12 +299,15 @@ width:300px;
 }
 .report-favorites-row .content-row .right-content{
 float:right;
-width:200px;
+width:190px;
 text-align:right;
 }
 .report-favorites-row .content-row .right-content .run-div{
-padding:20px;
+padding:20px 0px;
 overflow:hidden;
+}
+.report-favorites-row .content-row .right-content .action-icon-div{
+padding:20px 0px;
 }
 .report-favorites-row .content-row .right-content .run-div a{
  	background-color: #45C9FE;
@@ -181,93 +318,26 @@ overflow:hidden;
     float: right;
     padding: 5px 10px;;
 }
-.report-favorites-row .content-row .right-content .action-icon-div{
-padding:20px;
-}
+
 .report-favorites-row .content-row .right-content .action-icon-div a{
 padding:10px 5px;
 }
-#form-div .form-title{
-font-size: 16px;
-}
-#form-div .form-data .action-button{
-text-align:right;
-}
-#form-div .form-data .form-group .form-inner-head{
-border-top:1px solid #D6D5D4;
-border-bottom:1px solid #D6D5D4;
-}
-#form-div .form-data .form-group span.inner-head{
-font-size:14px;
-font-weight:bold;
-padding-right:20px;
-}
-#form-div .form-data .form-group .form-inner-head a.form-close-div{
-font-size:11px;
-background: url("../images/up-arrow.png") no-repeat scroll right center transparent;
-padding-right:20px;
-}
-#form-div .form-data .row {
-padding:10px 0px;
-overflow:hidden;
-line-height:20px;
-}
-#form-div .form-data .row label{
-float:left;
-width:200px;
-padding:0px 20px;
-}
-#form-div .form-data .row div.input-div{
-float:left;
-}
-#form-div .form-data .row .form-note-center{
-text-align:center;
-}
-input[type="submit"],input[type="button"]{
-/*	background-color: #45C9FE;
-	border: 1px solid #424343;
-	border-radius: 5px 5px 5px 5px;
-*/
-	color: #424343;
-	padding: 4px 6px;
-	font-size:12px;
-	margin:0px 5px;
-}
-#form-div .validation-div{
-color:#FF0000;
-}
 
-.down-arrow-dd{
-border:1px solid #DDDDDD;
-background:url("../images/down-arrow.png") no-repeat scroll center 4px transparent;
-width:22px;
-height:21px;
-float:left;
-cursor:pointer;
-border-left:none;
-}
-.down-arrow-input{
-float:left;
-margin:0px;
-padding:0px;
-height:21px;
-border:1px solid #DDDDDD;
-}
-select,textarea,input[type="text"],input[type="password"]{
-border:1px solid #DDDDDD;
-}
-.boldCls{
-font-weight:bold;
-}
-/******************************/
+/************************************/
+/*		Dashboard - END				*/
+/************************************/
+
+/********************************/
+/*		POPUP BOX CSS - START	*/
+/********************************/
 #popupbox{
-position:fixed;
-top:0px;
-left:0px;
-width:100%;
-background-color:rgba(69, 69, 69, 0.7);
-z-index: 199;
-display:none;
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:100%;
+	background-color:rgba(69, 69, 69, 0.7);
+	z-index: 199;
+	display:none;
 }
 .popupbox-800{
 	width: 750px;
@@ -276,6 +346,52 @@ display:none;
 	margin:150px auto;
 	background:#fff;
 }
+.popupbox-600{
+		background: none repeat scroll 0 0 #FFFFFF;
+		border: 1px solid #000000;
+		margin: 50px auto;
+		padding: 10px;
+		width: 550px;
+}
+h1.popbox-head{
+font-size:16px;
+padding-bottom:5px;
+}
+#my_report_list{
+height:500px;
+overflow:auto;
+}
+.form-close-div{
+display:none;
+}
+
+.ui-autocomplete-loading { background: white url('../images/ui-anim_basic_16x16.gif') right center no-repeat; }
+
+/********************************/
+/*		POPUP BOX CSS - END		*/
+/********************************/
+
+/****************************/
+/*		LOGIN BOX CSS - END	*/
+/****************************/
+#login-form{
+width:412px;
+border:1px solid #D6D5D4;
+margin:100px auto;
+}
+#login-form .row label{
+width:100px !important; 
+}
+div.log-button{
+float:right;
+}
+#rememberme{
+margin:0px;
+}
+/****************************/
+/*		LOGIN BOX CSS - END	*/
+/****************************/
+
 
 
 /******************************/
@@ -293,3 +409,27 @@ display:none;
 * html .ui-autocomplete {
 	height: 100px;
 }
+
+
+/********************************/
+.msg_error {   
+    color: #FF0000;
+    padding: 7px 8px 7px 30px;
+}
+table { 
+		border-collapse: 
+		collapse; 
+		width:100%;
+	}
+td, th {
+		padding: .3em;
+		border: 1px #ccc solid;
+		}
+thead { 
+		background: #45C9FE; 
+	}
+
+.validation-div{
+	background: #D6D5D4;
+}
+

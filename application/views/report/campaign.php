@@ -95,11 +95,11 @@ error_reporting(E_ALL ^ E_NOTICE);
 				<div id="form-group-1">
 					<div class="row">
 						<label for="report-name">Report name</label> 
-						<div class="input-div"><input type="input" name="report-name" value="" id="report-name" /></div>
+						<div class="input-div"><input type="text" name="report-name" value="" id="report-name" /></div>
 					</div>
 					<div class="row">			
 						<label for="description">Description</label>
-						<div class="input-div"><input type="input" name="description" value="" id="description" /></div>
+						<div class="input-div"><input type="text" name="description" value="" id="description" /></div>
 					</div>
 					<div class="row">			
 						<label for="sharing">Sharing</label>
@@ -214,7 +214,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 							Last
 						</label> 
 						<div class="input-div">
-							<input type="input" name="last_num" value="" id="last_num" />
+							<input type="text" name="last_num" value="" id="last_num" />
 							<select id="last" name="last">
 								<option value="Days">Days</option>
 								<option value="Weeks">Weeks</option>
@@ -227,8 +227,8 @@ error_reporting(E_ALL ^ E_NOTICE);
 							Custom
 						</label> 
 						<div class="input-div">
-							Start Date <input type="input" name="startDate" value="" id="startDate" />
-							End Date <input type="input" name="endDate" value="" id="endDate" />
+							Start Date <input type="text" name="startDate" value="" id="startDate" />
+							End Date <input type="text" name="endDate" value="" id="endDate" />
 						</div>
 					</div>												
 				</div>

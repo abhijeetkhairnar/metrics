@@ -58,15 +58,6 @@ border:1px solid #DDD;
 list-style:none;
 background-color:#FFF;
 }
-/*
-.dd-left-div ul li:hover,
-.dd-right-div ul li:hover{
-background-color:#FFEEDD;
-}
-*/
-.dd-left-div ul li ul:parent{
-background-color:#000 !important;
-}
 .ui-icon{
 background-image: url("../images/ui-icons_888888_256x240.png");
 height: 16px;
@@ -91,19 +82,11 @@ cursor: pointer;
 display: block;
 float: right;
 }
-.ui-icon-plus-sign{
-background-position: -32px -48px;
-cursor: pointer;
-display: block;
-float: left;
-margin:0px 2px;
-}
-
 .dd-left-div ul li ul{
-margin-left:20px;
+padding-left:20px;
 }
 .ui-loading{
-background: url("../images/ajax-loader.gif") no-repeat scroll center center #aaa;
+background: url("../images/ajax-loader.gif") no-repeat scroll center center #EEEEEE;
 opacity: 0.7;
 z-index: 99;
 width:658px;
@@ -113,4 +96,9 @@ top:0px;
 }
 .advance-div div.row{
 padding:10px 0px;
+}
+/***** can delete after demo*****/
+.advance-div div label{
+width:100px;
+float:left;
 }

@@ -57,44 +57,105 @@ function dataProcess_helper($form_data = array()){
 					unset($form_data[$val]);									
 				}	
 			}
-		}
-
-		
+		}		
 		
 		/* -- For time being fitler call set blank -- */
 		$filtersDataKey = array();
 		$filtersDataVal = array();	
 
-		$filtersDataKey = array_keys($filterData);
-		$filtersDataVal = array_values($filterData);	
+		if (count($filterData) > 0){
+			$filtersDataKey = array_keys($filterData);
+			$filtersDataVal = array_values($filterData);
+		}
 		
 		$form_data = __setDateRange($form_data);
 		unset($form_data['date_range']);
-				
+
+		unset($form_data['save']);
 		foreach($form_data as $key => $val){
-			$reportData[$key] = $val;
+			if ($key == "date_range_dsc"){
+				continue;
+			}
+			if (!strstr($key, 'schedule_popup_')){
+				$reportData[$key] = $val;
+			}else{
+				if ($key == "report_name" && empty($val)){
+					$val = 'Unsaved Report-'. date('m/d/Y - H:i:s');
+				}
+				$reportScheduleInfo[$key]  = trim($val);				
+			}			
 		}
+						
+		/*-------------------------------------------------------------------------
+		| To process scheduleded information....		
+		--------------------------------------------------------------------------*/
+		if (is_array($reportScheduleInfo)){
+			switch ($reportScheduleInfo['schedule_popup_criteria']){
+			
+				case '1':
+							$reportData['frequency_type'] 	= $reportScheduleInfo['schedule_popup_type'];
+							$reportData['frequency_val']	= 0;
+							break;
+				
+				case '2':
+							$reportData['frequency_type'] 	= $reportScheduleInfo['schedule_popup_date_range_dsc'];
+							$reportData['frequency_val']	= $reportScheduleInfo['schedule_popup_date_range_num'];
+							break;				
+				case '3':
+							$reportData['start_date'] 	= date('d-M-Y', strtotime($reportScheduleInfo['schedule_popup_start_date']));
+							$reportData['end_date']		= date('d-M-Y', strtotime($reportScheduleInfo['schedule_popup_end_date']));
+							break;
+			}
+			
+			$reportData['email'] 	= $reportScheduleInfo['schedule_popup_emails'];
+		}		
+		/*-------------------------------------------------------------------------*/
 		
-		
+		$reportData['user_id'] = 104;		
 		unset($reportData['metrics']);
 		unset($reportData['filters']);
 		
 		$reportDataKey = array_keys($reportData);
-		$reportDataVal = array_values($reportData);
-			
-		$final_data = array("reportDataKey"	 => $reportDataKey, 
-							"reportDataVal"		 => $reportDataVal, 
+		$reportDataVal = array_values($reportData);	
+				
+		$final_data = array("reportDataKey"	 	=> $reportDataKey, 
+							"reportDataVal"		=> $reportDataVal, 
 							"dimension" 		=> $dimensions, 
 							"metrics" 			=> $metrics, 
 							"filtersDataKey" 	=> $filtersDataKey,
 							"filtersDataVal"	=> $filtersDataVal
 							);
+							
+		$errorList = __validationCheck($reportData, $dimensions, $metrics);
+		if (count($errorList) > 0){
+			$final_data['error_msg'] = $errorList;
+		}	
+		
 		return $final_data;
 		
 	}else{
 		log_info('Post form data is empty');
 	}
 	
+}
+
+/** --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+| @Author: Amin S.
+| @Description : UI side validation check
+				1) Is report name empty.
+				2) Dimension mandatory.
+				3) Metrics mandatory.
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- **/
+
+function __validationCheck(& $reportDataValidationCheck, & $dimensionsValidationCheck, & $metricsValidationCheck){
+
+	if (count($dimensionsValidationCheck) == 0){
+		$tempErrorList[] = "Please select atleast one dimensions.";
+	}
+	if (count($metricsValidationCheck) == 0){
+		$tempErrorList[] = "Please select atleast one metrics.";
+	}
+	return $tempErrorList;
 }
 
 /** --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
@@ -114,7 +175,7 @@ function __setDateRange($form_data = array()){
 																$date_range_desc	= "Yesterday";	
 																break;
 												case 'week to date':
-																$start_date_range 	= "TO_NUMBER(TO_CHAR(TRUNC(NEXT_DAY(SYSDATE - 7, 'Sunday')),''YYYYMMDD''))";
+																$start_date_range 	= "TO_NUMBER(TO_CHAR(TRUNC(NEXT_DAY(SYSDATE - 7, ''Sunday'')),''YYYYMMDD''))";
 																$end_date_range 	= "TO_NUMBER(TO_CHAR(TRUNC(SYSDATE),''YYYYMMDD''))";
 																$date_range_desc	= "Week to date";
 																break;
@@ -124,8 +185,8 @@ function __setDateRange($form_data = array()){
 																$date_range_desc	= "Past 7 days";
 																break;
 												case 'last week':
-																$start_date_range 	= "TO_NUMBER(TO_CHAR(NEXT_DAY(SYSDATE - 14, 'Sunday'),''YYYYMMDD''))";
-																$end_date_range 	= "TO_NUMBER(TO_CHAR(NEXT_DAY(SYSDATE - 14, 'Sunday') + 6,''YYYYMMDD''))";
+																$start_date_range 	= "TO_NUMBER(TO_CHAR(NEXT_DAY(SYSDATE - 14, ''Sunday''),''YYYYMMDD''))";
+																$end_date_range 	= "TO_NUMBER(TO_CHAR(NEXT_DAY(SYSDATE - 14, ''Sunday'') + 6,''YYYYMMDD''))";
 																$date_range_desc	= "Last week";
 																break;
 												case 'month to date':
@@ -153,21 +214,22 @@ function __setDateRange($form_data = array()){
 											__unsetFormData($form_data, 'predefined');
 											break;
 		case 'last_radio_check':	
-									if ( strtolower($form_data['frequency_type']) == 'days'){
-										$start_date_range 	= "TO_NUMBER(TO_CHAR(TRUNC(SYSDATE - 7),''YYYYMMDD''))";
+									$date_range_num		= $form_data['date_range_num'];
+									if ( strtolower($form_data['date_range_dsc']) == 'days'){										
+										$start_date_range 	= "TO_NUMBER(TO_CHAR(TRUNC(SYSDATE - $date_range_num),''YYYYMMDD''))";
 										$end_date_range 	= "TO_NUMBER(TO_CHAR(TRUNC(SYSDATE - 1),''YYYYMMDD''))";
 										$date_range_desc	= "Days";										
-									}else if (strtolower($form_data['frequency_type']) == 'weeks'){
-										$start_date_range 	= "TO_NUMBER(TO_CHAR(TRUNC(SYSDATE - 7 * 7),''YYYYMMDD''))";
+									}else if (strtolower($form_data['date_range_dsc']) == 'weeks'){
+										$start_date_range 	= "TO_NUMBER(TO_CHAR(TRUNC(SYSDATE -  $date_range_num * 7),''YYYYMMDD''))";
 										$end_date_range 	= "TO_NUMBER(TO_CHAR(TRUNC(SYSDATE - 1),''YYYYMMDD''))";
 										$date_range_desc	= "Weeks";
 									}
-									$date_range_num		= $form_data['frequency_val'];
+									
 									__unsetFormData($form_data, 'last');
 									break;										
 		case 'custom_radio_check':
-									$start_date_range 	= $_POST['start_date_range'];
-									$end_date_range 	= $_POST['end_date_range'];
+									$start_date_range 	= date('d-M-Y', strtotime($_POST['start_date_range']));
+									$end_date_range 	= date('d-M-Y', strtotime($_POST['end_date_range']));
 									$date_range_desc	= '';
 									$date_range_num		= '';
 									__unsetFormData($form_data, 'custom');

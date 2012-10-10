@@ -11,14 +11,44 @@ $(document).ready(function(){
 	$(".report-favorites-row .close").click(function(){
 		$(this).closest('div.report-favorites-row').animate({ opacity: 'hide' }, "slow");
 	});
-
+	
+	$("#schedule_popup_close").live("click", function() {
+		$("#popupbox").hide();
+	});
+	
+	$('#report_list_popup_box').live("click", function() {
+		$("#popupbox").hide();
+		$.ajax({
+			url: '<?php echo base_url();?>index.php/dashboard/dashboard/getReportList',
+			type: 'POST',
+			data: { 
+					user_id : 104 
+				},
+			dataType: 'html', 
+			success: function(data){ 
+				var row = '';
+				$("#popupbox").show();
+				$('#popupbox').css('height',$(document).height());
+				var obj = jQuery.parseJSON(data);
+				for(var i =0;  i  < obj.length; i++){
+					row += '<tr><td>' + obj[i].report_type + '</a></td><td> <a href="<?php echo base_url();?>index.php/report/adopsreport/standard?edit=true&id='+obj[i].report_id+'"> ' + obj[i].report_name + '</a></td></tr>';
+				}
+				var table = '<table class="table"> <tr> <th> Report Type</th> <th> Report Name </th> </tr>' + row + '</table>';
+				$("#my_report_list").html(table);
+			}
+		 });
+	});
 });
 </script>
 <div id="dashboard-main">
 	<h1 class="page-title">Dashboard</h1>
 	
 	<div id="dashbord-left">
-		<h2 class="inner-title">My Report Summary</h2>
+		<h2 class="inner-title">
+			<a href="javascript:void(0)" id="report_list_popup_box">
+				My Report Summary
+			</a>	
+		</h2>
 		<div id="summary-count-div">
 			<div id="summary-count-warrper">
 				<div class="grey-box">
@@ -26,7 +56,7 @@ $(document).ready(function(){
 					<div class="text-val">Running Now</div>
 				</div>
 				<div class="grey-box">
-					<div class="count-val">5</div>
+					<div class="count-val"><?php echo $resultSet; ?></div>
 					<div class="text-val">Last 7 days</div>
 				</div>
 			</div>	
@@ -208,5 +238,18 @@ $(document).ready(function(){
 				<div class="add-favorites-report"><a href="#">+ Add Favorite Report</a></div>
 			</div>
 		</div>
+		
+		<!------------------------ My Report POPUP START --------------------------->				
+			<div id="popupbox" >
+				<div class="popupbox-600"> 
+					<h1 class="popbox-head">My Reports</h1>
+					<div id="my_report_list"></div>
+					<div class="row">
+						<input type="button" name="schedule_popup_close" value="Close" id="schedule_popup_close" />
+					</div>
+				</div>
+			</div>
+		<!------------------------ My Report POPUP END --------------------------->	
+			
 	</div>	
 </div>

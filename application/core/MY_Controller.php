@@ -16,7 +16,7 @@ class My_Controller extends CI_Controller {
 
     function __construct(){
 		$data = array();
-        parent::__construct();
+        parent::__construct();        
     }
 	
 	function __destructor(){

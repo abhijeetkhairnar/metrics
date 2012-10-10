@@ -1,83 +1,88 @@
 #menu {
-	list-style:none;
-	background-color:#F3F3F4;
-	display:table;	
-	margin:0px auto 0px auto;
-	height:30px;
+    background-color: #D6D5D4;
+    border-bottom: 2px solid #FFFFFF;
+    height: 43px;
+    list-style: none outside none;
+    width: 1024px;
 }
 
 #menu li {
-	float:left;
-	display:block;
-	text-align:center;
-	position:relative;
-	padding: 6px 10px;
-	border:none;
-	margin:5px 0px 0px 0px;
-	color: #45C9FE;
-
+    border: medium none;
+    display: block;
+    float: left;
+    position: relative;
+    text-align: center;
 }
-
 #menu li:hover {
-	background-color:#fff;	
+    background-color: #424343;
 }
-#menu li.li_separator:hover {
-	background: #D6D5D4;
+.main-menu-1 {
+    width: 341px;
+}
+.main-menu-2 {
+    width: 342px;
+}
+.main-menu-1 {
+    width: 341px;
 }
 #menu li a {
-   color: #45C9FE;
+    border-right: 1px solid #FFFFFF;
+    color: #6A7677;
     display: block;
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
+    line-height: 23px;
     outline: 0 none;
+    padding: 10px;
     text-decoration: none;
 }
-
-#menu li:hover a {}
-#menu li .drop {
-	background: url("../images/down-arrow.png") no-repeat scroll right center transparent;
-    padding-right: 20px;
+#menu li:hover a {
+color:#F5F9F8;
 }
-#menu li:hover .drop {
-	 background: url("../images/down-arrow.png") no-repeat scroll right center transparent;
+.dropdown_5columns {
+    width: 342px;
 }
-
-.dropdown_columns
- {
-	margin:4px auto;
-	float:left;
-	position:absolute;
-	left:-999em;
-	text-align:left;
-	padding:10px 5px 10px 5px;
-	border:1px solid #000;
-	background:#FFF;
-	border-radius:5px;
-	box-shadow:2px 4px 8px #424343;
-	
+.dropdown_5columns {
+    background-color: #494949;
+    border-top: 2px solid #FFFFFF;
+    color: #F5F9F8;
+    float: left;
+    left: -999em;
+    position: absolute;
+    text-align: left;
 }
-
-.dropdown_columns {width:1000px; }
-
-#menu li:hover .dropdown_columns {
-	left:-500px;
+#menu li:hover .dropdown_5columns {
+	left:-1px;
 	top:auto;
-	z-index:999;	
 }
-#menu li .dropdown_columns ul{
-	overflow:hidden;
-	width:100%;
+
+#menu li h3 {
+    color: #F5F9F8;
+    font-size: 12px;
+    padding: 10px 25px;
 }
-#menu li .dropdown_columns ul li{
-	margin:0px;
-	padding:0px;
-	width:25%;
+.simple-link {
+    background-color: #494949 !important;
+    color: #F5F9F8 !important;
+    font-size: 12px !important;
+    padding: 10px 25px !important;
 }
-#menu li .dropdown_columns ul li a{
-	font-size:11px;
-	font-weight:bold; 
-	color: #45C9FE;
-	padding:5px;
-	text-align:left;
+
+#menu li ul.listUL li {
+    display: block;
+    float: none;
+}
+
+#menu li ul.listUL li a {
+    background-color: #494949;
+    font-size: 12px;
+    line-height: 14px;
+    padding: 5px 25px;
+    text-align: left;
+	color:#F5F9F8;
+	border-right:none;
+}
+
+#menu li ul.listUL li a:hover {
+    color: #54C6FC;
 }

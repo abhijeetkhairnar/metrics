@@ -1,20 +1,20 @@
 <?php 
 /******************************************************
 *	FileName 	 : adopsreport.php
-*	Created By 	 : Aksahy Sardar.
+*	Created By 	 : Amin S/Aksahy Sardar.
 *	Created Date : 25 Aug 2012.
 *	Description	 : Report Controller file.
 *	Version 	 : 1.0                  
 ******************************************************/
-
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Adopsreport extends CI_Controller {
 
-	function __construct(){
-        parent::__construct();
-		$this->load->helper('url');	
-		$this->load->model('report/adopsreport_model', 'adopsreport_model');		
-    }
+	function __construct(){            
+            parent::__construct();
+            $this->load->helper('url');	
+            $this->load->model('report/adopsreport_model', 'adopsreport_model');            
+            
+        }
 	
 	/*********************************************
 	*	Created By 	 : Aksahy Sardar.
@@ -28,14 +28,15 @@ class Adopsreport extends CI_Controller {
 	}
 	
 	/*********************************************
-	*	Created By 	 : Aksahy Sardar.
+	*	Created By 	 : Amin S
 	*	Created Date : 25 Aug 2012.
 	*	Updated Date : 12 Sept 2012.
 	*	Description	 : Standard report controller.
 	*********************************************/	
 	function standard()
 	{	
-		
+               //echo "<pre>"; print_r($this->session); echo "</pre>";exit;
+                
 		$this->load->helper('log4php');
 		$this->load->helper('form');
 		$this->load->library('form_validation');		
@@ -44,36 +45,161 @@ class Adopsreport extends CI_Controller {
 		$data['title'] = 'Standard report';
 		//-- Hard Code entry for testing only --//
 		$data['report_type'] = '1';				
-
-		$this->form_validation->set_rules('report_name', 'Report name', 'required');
-		$this->form_validation->set_rules('report_desc', 'Description', 'required');
 		
-		if (isset($_POST)){
-			$_POST = self::__unsetPostData($_POST);
+		if (isset($_POST['save'])){
+			$type	=	'Save';
+		}else if (isset($_POST['update'])){
+			$type	=	'Update';
+		}else if (isset($_GET['edit'])){
+			$type	=	'Edit';
+		}
+		echo $type;
+		
+					
+		switch($type){		
+				case 'Edit':
+						// Report Edit case
+						/*************************************************************************/
 			
-			$this->load->helper('process_data');
-			log_info("Add process data helper");
-			$tempArr = dataProcess_helper($_POST);
-		//	echo "<pre>"; print_r($tempArr); echo "</pre>";			
-			if ($this->form_validation->run() === FALSE){		
-				//$data  =  self::__setFormData($tempArr);
-			}else{
-				if (isset($_POST['save'])){
-					$_POST['is_run_report'] = 0;
-					$_POST['start_date']	=  date('d-M-y');
-					$_POST['end_date']		=  date('d-M-y');
-					unset($_POST['save']);
-				}else if (isset($_POST['run'])){
-					$_POST['is_run_report'] = 1;
-					unset($_POST['run']);
-				}
-				$data  =  self::__setFormData($tempArr);				
+						$editData = $this->adopsreport_model->editReport($_GET['id']);				
+						$postArray = array( 
+										"header" => array( 
+															"report_name" 		=> $editData['header']['REPORT_NAME'],
+															"report_desc" 		=> $editData['header']['REPORT_DESC'],
+															"is_shared" 		=> $editData['header']['IS_SHARED'],
+															"is_inc_header" 	=> $editData['header']['IS_INC_HEADER'],
+															"date_range_num" 	=> $editData['header']['DATE_RANGE_NUM'],
+															"date_range_desc" 	=> $editData['header']['DATE_RANGE_DESC'],
+															"start_date"		=> $editData['header']['START_DATE'],
+															"frequency_type"	=> $editData['header']['FREQUENCY_TYPE'],
+															"frequency_num"		=> $editData['header']['FREQUENCY_NUM'],
+															"end_date"              => $editData['header']['END_DATE'],
+															"start_date_range" 	=> $editData['header']['START_DATE_RANGE'],
+															"end_date_range" 	=> $editData['header']['END_DATE_RANGE']
+													)
+										);
 				
-		//		$status = $this->adopsreport_model->saveReport($tempArr);
-		//		echo "status--".$status;			
-			}	
-			//$data  =  self::__setFormData($tempArr);
-			//echo "<pre>"; print_r($data); echo "</pre>";
+							for($i = 0 ; $i < count($editData['dimensions']) ; $i++){
+								$arrDem[] = $editData['dimensions'][$i]['COLUMN_ID'];
+							}
+							$postArray['dimensions'] =  $arrDem;
+							
+							for($i = 0 ; $i < count($editData['metrics']) ; $i++){
+								$arrMtrx[] = $editData['metrics'][$i]['COLUMN_ID'];
+							}
+							$postArray['metrics'] =  $arrMtrx;
+							
+							for($i = 0 ; $i < count($editData['filters']) ; $i++){
+								$arrFil[] = $editData['filters'][$i]['COLUMN_ID'];
+							}
+							$postArray['filters'] =  $arrFil;
+							
+							for($i = 0 ; $i < count($editData['filters']) ; $i++){
+								$arrFilVal[] = $editData['filters'][$i]['COLUMN_VAL'];
+							}
+							$postArray['filtersVal'] =  $arrFilVal;
+							
+							if (is_array($postArray['filters'])){
+							
+								$reportFilterBody = array_combine($postArray['filters'], $postArray['filtersVal']);	
+							
+								
+								foreach($reportFilterBody as $key => $val){			
+									$filterFieldType = $this->adopsreport_model->getFilterInput($key);				
+									if (strtolower($filterFieldType) == 'textbox'  ||  strtolower($filterFieldType) == 'search'){										
+										$reportFiltersBody[$key] = '"' .$val. '"';
+									}else if (strtolower($filterFieldType) == 'listbox'){
+										//$selectedFilterArr = explode(',', $val);
+										$reportFiltersBody[$key] = json_encode($this->adopsreport_model->getSelectedFilterData($key, $val));
+									}
+									$reportDetailsFilters			= json_encode($this->adopsreport_model->getLabelnIdMappingForDD($postArray['filters']));
+								}
+							}
+							$reportHeader					= $postArray['header'];
+							$reportDetailsDimensions		= json_encode($this->adopsreport_model->getLabelnIdMappingForDD($postArray['dimensions']));
+							$reportDetailsMetrics			= json_encode($this->adopsreport_model->getLabelnIdMappingForDD($postArray['metrics']));
+						
+							self::__setDateRangeOnPage($reportHeader);			
+									
+							$reportHeader['report_id']	=	$_GET['id'];
+							$data = array ("reportHeader"		 =>$reportHeader, 
+											 "dimensions" 		 =>$reportDetailsDimensions, 
+											 "metrics" 			 =>$reportDetailsMetrics, 
+											 "filtersDataKey" 	 =>$reportDetailsFilters,
+											 "reportFiltersBody" => $reportFiltersBody);
+
+							break;
+					
+			
+			case 'Save':
+								// Report Save case
+							
+							$_POST = self::__unsetPostData($_POST);
+							
+							$this->load->helper('process_data');
+							log_info("Add process data helper");
+							
+							$tempArr = dataProcess_helper($_POST);
+							
+							$_POST['is_run_report'] = 0;
+							$_POST['start_date']	=  date('d-M-y');
+							$_POST['end_date']		=  date('d-M-y');
+							unset($_POST['save']);
+							
+							$data  =  self::__setFormData($tempArr);
+						
+							if (count($tempArr['error_msg']) > 0){
+								$data['error_msg'] = $tempArr['error_msg'];
+							}else{
+							
+								$savedInfo = $this->adopsreport_model->saveReport($tempArr);
+								
+								if ($savedInfo['validation_message'][0] == 'Validation success' && is_numeric($savedInfo['status'])){
+									$data['error_msg'] = array('Report saved successfully...');					
+								}else if ($savedInfo['validation_message'] == 'Validation success' && !is_numeric($savedInfo['status'])){
+									$data['error_msg'] = array($savedInfo['status']);
+								}else if ($savedInfo['validation_message'] != 'Validation success'){
+									$data['error_msg'] = $savedInfo['validation_message'];
+								}				
+							}	
+							break;
+			
+			case 'Update':
+								// Report Update case
+							
+							$_POST = self::__unsetPostData($_POST);
+							unset($_POST['update']);
+							$this->load->helper('process_data');
+							log_info("Add process data helper");
+							
+							$tempArr = dataProcess_helper($_POST);
+							$_POST['is_run_report'] = 0;
+							$_POST['start_date']	=  date('d-M-y');
+							$_POST['end_date']		=  date('d-M-y');
+							
+							
+							$data  =  self::__setFormData($tempArr);
+						
+							if (count($tempArr['error_msg']) > 0){
+								$data['error_msg'] = $tempArr['error_msg'];
+							}else{
+							
+								$savedInfo = $this->adopsreport_model->updateReport($tempArr);
+								
+								if ($savedInfo['validation_message'][0] == 'Validation success' && is_numeric($savedInfo['status'])){
+									$data['error_msg'] = array('Report saved successfully...');					
+								}else if ($savedInfo['validation_message'] == 'Validation success' && !is_numeric($savedInfo['status'])){
+									$data['error_msg'] = array($savedInfo['status']);
+								}else if ($savedInfo['validation_message'] != 'Validation success'){
+									$data['error_msg'] = $savedInfo['validation_message'];
+								}				
+							}	
+							break;
+			
+		}			
+		
+		if (is_array($data['reportHeader'])){
+			self::__setDateRangeOnPage($data['reportHeader']);
 		}		
 		$this->load->template('report/standard' , $data);	
 }
@@ -219,7 +345,12 @@ class Adopsreport extends CI_Controller {
 	*	Description	 : Controller to get dimensions in json format for DD creation.
 	*********************************************/		
 	function getDimensions(){
-		echo $json_dimensions = json_encode($this->adopsreport_model->getDimensions());		
+		$json_dimensions = json_encode($this->adopsreport_model->getDimensions());		
+		if($json_dimensions){
+			echo $json_dimensions;
+		}else{
+			echo "[]";
+		}
 		exit;
 	}
 	
@@ -229,7 +360,12 @@ class Adopsreport extends CI_Controller {
 	*	Description	 : Controller to get metrics in json format for DD creation.
 	*********************************************/	
 	function getMetrics(){
-		echo $json_metrics = json_encode($this->adopsreport_model->getMetrics());		
+		$json_metrics = json_encode($this->adopsreport_model->getMetrics());		
+		if($json_metrics){
+			echo $json_metrics;
+		}else{
+			echo "[]";
+		}
 		exit;
 	}	
 	
@@ -239,7 +375,12 @@ class Adopsreport extends CI_Controller {
 	*	Description	 : Controller to get filters in json format for DD creation.
 	*********************************************/	
 	function getFilters(){
-		echo $json_filters = json_encode($this->adopsreport_model->getFilters());		
+		$json_filters = json_encode($this->adopsreport_model->getFilters());		
+		if($json_filters){
+			echo $json_filters;
+		}else{
+			echo "[]";
+		}
 		exit;
 	}
 	
@@ -250,10 +391,14 @@ class Adopsreport extends CI_Controller {
 	*********************************************/	
 	function getFilterInput(){
 		$filters_type = $this->adopsreport_model->getFilterInput();		
-		if (strtolower($filters_type) == 'textbox'){
-			echo $html = '<input type="text" name="'.$_REQUEST['id'].'" id="'.$_REQUEST['id'].'" value="" size="50">';
-		}else{			
-			echo 'ListBox';
+		
+		if (strtolower($filters_type) == 'search'){
+			echo 'Search';
+		}
+		else if (strtolower($filters_type) == 'listbox'){			
+			echo "ListBox";
+		}else {
+			echo $html = '<input type="text" name="'.$_REQUEST['id'].'" id="'.$_REQUEST['id'].'" value="" size="106">';			
 		}
 	}	
 	
@@ -283,22 +428,69 @@ class Adopsreport extends CI_Controller {
 	*********************************************/
 	function __setFormData($tempArr = array()){
 		
+		
+		$reportFiltersBody;
 		$reportHeader = array_combine($tempArr['reportDataKey'], $tempArr['reportDataVal']);
-		$reportDetailsDimensions		= json_encode($this->adopsreport_model->getLabelnIdMappingForDD($tempArr['dimension']));
-		$reportDetailsMetrics			= json_encode($this->adopsreport_model->getLabelnIdMappingForDD($tempArr['metrics']));
-		$reportDetailsFilters			= json_encode($this->adopsreport_model->getLabelnIdMappingForDD($tempArr['filtersDataKey']));
-		
-		$reportFilterBody = array_combine($tempArr['filtersDataKey'], $tempArr['filtersDataVal']);	
-		
-		foreach($reportFilterBody as $key => $val){			
-			$filterFieldType = $this->adopsreport_model->getFilterInput($key);				
-			if (strtolower($filterFieldType) == 'textbox'){
-				$reportFiltersBody[$key] = $val;
-			}else if (strtolower($filterFieldType) == 'listbox'  ||  strtolower($filterFieldType) == 'search'){
-				//$selectedFilterArr = explode(',', $val);
-				$reportFiltersBody[$key] = json_encode($this->adopsreport_model->getSelectedFilterData($key, $val));
+		if (count($tempArr['dimension']) > 0){
+		 $reportDetailsDimensions		= json_encode($this->adopsreport_model->getLabelnIdMappingForDD($tempArr['dimension']));
+		}
+		if (count($tempArr['metrics']) > 0){
+		 $reportDetailsMetrics			= json_encode($this->adopsreport_model->getLabelnIdMappingForDD($tempArr['metrics']));
+		}
+		if (count($tempArr['filtersDataKey']) > 0){
+		 $reportDetailsFilters			= json_encode($this->adopsreport_model->getLabelnIdMappingForDD($tempArr['filtersDataKey']));
+		}	
+				
+		if (is_array($tempArr['filtersDataKey']) && count($tempArr['filtersDataKey']) > 0){
+					
+			$reportFilterBody = array_combine($tempArr['filtersDataKey'], $tempArr['filtersDataVal']);	
+			
+			foreach($reportFilterBody as $key => $val){			
+				$filterFieldType = $this->adopsreport_model->getFilterInput($key);				
+				if (strtolower($filterFieldType) == 'textbox'  ||  strtolower($filterFieldType) == 'search'){
+					$reportFiltersBody[$key] = '"' .$val . '"';
+				}else if (strtolower($filterFieldType) == 'listbox'){
+					//$selectedFilterArr = explode(',', $val);
+					$reportFiltersBody[$key] = json_encode($this->adopsreport_model->getSelectedFilterData($key, $val));
+				}
 			}
 		}
+		
+		/*--------------------------------------------------------------------------------
+		| Scheduled form objects set
+		---------------------------------------------------------------------------------*/
+		
+		if (is_array($reportHeader)){
+			switch ($reportHeader['schedule_popup_criteria']){
+			
+				case '1':
+							
+							$reportHeader['frequency_type'] = $reportHeader['schedule_popup_type'];
+							$reportHeader['frequency_val']	= 0;
+							
+							unset($reportHeader['schedule_popup_type']);
+							break;
+				
+				case '2':
+							$reportHeader['frequency_type'] 	= $reportHeader['schedule_popup_date_range_dsc'];
+							$reportHeader['frequency_val']		= $reportHeader['schedule_popup_date_range_num'];
+							
+							unset($reportHeader['schedule_popup_date_range_dsc']);
+							unset($reportHeader['schedule_popup_date_range_num']);
+							break;				
+				case '3':
+							$reportHeader['start_date'] 	= date('d-M-Y', strtotime($reportHeader['schedule_popup_start_date']));
+							$reportHeader['end_date']		= date('d-M-Y', strtotime($reportHeader['schedule_popup_end_date']));
+							
+							unset($reportHeader['schedule_popup_start_date']);
+							unset($reportHeader['schedule_popup_end_date']);
+							break;
+			}
+			
+			$reportData['email'] 	= $reportHeader['schedule_popup_emails'];
+		}	
+		
+		/*-------------------------------------------------------------------------------*/
 		
 		$reportData = array ("reportHeader" => $reportHeader, 
 							 "dimensions" 	=>$reportDetailsDimensions, 
@@ -306,9 +498,65 @@ class Adopsreport extends CI_Controller {
 							 "filtersDataKey" =>$reportDetailsFilters,
 							 "reportFiltersBody" => $reportFiltersBody);
 							 
-
-		
-		echo "<pre>"; print_r($reportData); echo "</pre>";
 		return $reportData;
+	}
+	/*********************************************
+	*	Created By 	 : Amin.
+	*	Created Date : 27 Sep 2012.
+	*	Description	 : set Date Range Opetion
+	*********************************************/
+	
+	function __setDateRangeOnPage(& $tempReportHeader){
+		/*
+		if (isset($_GET['id'])){		
+			$selectedTerm = $tempReportHeader['date_range_dsc'];
+		}else{
+			$selectedTerm = $tempReportHeader['date_range_desc'];
+		}
+		*/
+		$selectedTerm = $tempReportHeader['date_range_desc'];
+		
+		$predefinedDateRangeList = $this->config->item('predefined_date_range');		
+		$lastDateRangeList = $this->config->item('last_date_range');
+		
+		if (in_array($selectedTerm, $predefinedDateRangeList)){
+			$tempReportHeader['date_range'] = 'predefined_radio';
+		}else if (in_array($selectedTerm, $lastDateRangeList)){
+			$tempReportHeader['date_range'] = 'last_radio';
+		}else{
+			$tempReportHeader['date_range'] = 'custom_radio';
+		}
+		
+		/*-----------------------------------------------
+		| To set scheduled information...
+		-----------------------------------------------*/
+		
+		echo "<pre>"; print_r($tempReportHeader); echo "</pre>";
+		if (isset($tempReportHeader['start_date']) && isset($tempReportHeader['end_date']) && !empty($tempReportHeader['start_date']) && !empty($tempReportHeader['end_date'])){
+			$tempReportHeader['scheduler_date_range'] = 'custom_radio';
+		}else if(isset($tempReportHeader['frequency_val']) && isset($tempReportHeader['frequency_num']) && !empty($tempReportHeader['frequency_val']) && !empty($tempReportHeader['frequency_num'])){
+			$tempReportHeader['scheduler_date_range'] = 'last_radio';
+		}else{
+			$tempReportHeader['scheduler_date_range'] = 'predefined_radio';
+		}		
+		
+		/*---------------------------------------------*/
+		
+	}
+	
+	/*********************************************
+	*	Created By 	 : Aksahy Sardar.
+	*	Created Date : 25 Aug 2012.
+	*	Description	 : Controller to get filters textbox autocomplete value in json format for autocomplete.
+	*********************************************/	
+	/****************** Demo Code ***************/
+	/*
+	function filtersAutoComplete(){
+		//echo $json_metrics = json_encode($this->adopsreport_model->getMetrics());		
+		echo $availableTags = json_encode(array("ActionScript","AppleScript","Asp","BASIC","C","C++","Clojure","COBOL","ColdFusion","Erlang","Fortran","Groovy","Haskell","Java","JavaScript","Lisp","Perl","PHP","Python","Ruby","Scala","Scheme"));
+		exit;
 	}	
+	*/	
+	
+	
 }

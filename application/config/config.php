@@ -224,7 +224,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = 'glam';
 
 /*
 |--------------------------------------------------------------------------
@@ -357,6 +357,64 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
+/*
+|--------------------------------------------------------------------------
+| Application Date Range BOX - Predefined
+|--------------------------------------------------------------------------
+|
+*/
+$config['predefined_date_range'] = array("Yesterday",
+										"Week to date", 
+										"Past 7 days", 
+										"Last week", 
+										"Month to date", 
+										"Past 30 days",
+										"Last month", 
+										"Year to date");
+
+/*
+|--------------------------------------------------------------------------
+| Application Date Range BOX - Last
+|--------------------------------------------------------------------------
+|
+*/
+$config['last_date_range'] = array("Days", "Weeks");
+
+
+/*
+|--------------------------------------------------------------------------
+| Application Date Range BOX - Scheduler
+|--------------------------------------------------------------------------
+|
+*/
+$config['scheduler_predefied_date_range'] = array("Days", "Weekly(Every Monday)", "Monthly(First Day of Month)");
+
+
+/*
+|--------------------------------------------------------------------------
+| Minimum Seach Character Lenght
+|--------------------------------------------------------------------------
+|
+*/
+$config['min_search_char_lenght'] = 3;
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Application LDAP server
+|--------------------------------------------------------------------------
+|
+*/
+$config['ldap_server'] = "10.0.1.3";
+
+/*
+|--------------------------------------------------------------------------
+| Application LDAP server
+|--------------------------------------------------------------------------
+|
+*/
+$config['app_domain_name'] = "PROJECTY";
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

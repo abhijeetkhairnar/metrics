@@ -21,81 +21,87 @@ class Adopsreport_model extends MY_Model {
 	*********************************************/		
 	public function getDimensions()
 	{	
-		$conn = parent::__adqConnection();		
+		
 		$reportType = "1";
-		$curs = oci_new_cursor($conn);
-		if($curs){
-			log_info("Problem in allocating a new cursor.");
-		}		
-			if(!$_POST['pid']){	
-				/*********************************************
-				*	Fetch the parent dimensions using following proc.
-				*	PKG_ADQ_DISPLAY.PRC_DISPLAY_DIMS(:pn_report_type , :pc_rc).
-				*	:pn_report_type = IN parameter	- report type id.
-				*	:pc_rc			= OUT parameter	- return value for (ID, LABEL, CHILDEXIST). 
-				*********************************************/					
-				$sql = "BEGIN PKG_ADQ_DISPLAY.PRC_DISPLAY_DIMS(:pn_report_type , :pc_rc); END;";
-				log_info("Sql - ".$sql." ");
-				$stmt = oci_parse($conn,$sql);
-				if(!$stmt){
-					log_info("Problem in sql stmt parsing.");
-				}
-				$reportTypeBind = oci_bind_by_name($stmt,":pn_report_type",$reportType);
-				if(!$reportTypeBind){
-					log_info("Problem in oci_bind_by_name() for :pn_report_type to ".$reportType.".");
-				}
-	
-			}else if($_POST['pid']){
-				$parentId = $_POST['pid'];
-				/*********************************************
-				*	Fetch the child dimensions using following proc.
-				*	PKG_ADQ_DISPLAY.PRC_DISPLAY_CDIMS(:pn_report_type , :pn_prnt_id , :pc_rc);.
-				*	:pn_report_type = IN parameter	- report type id.
-				*	:pn_prnt_id		= IN parameter	- parent id
-				*	:pc_rc			= OUT parameter	- return value for (ID, LABEL). 
-				*********************************************/					
-				$sql = "BEGIN PKG_ADQ_DISPLAY.PRC_DISPLAY_CDIMS(:pn_report_type , :pn_prnt_id , :pc_rc); END;";
-				log_info("Sql - ".$sql." ");
-				$stmt = oci_parse($conn,$sql);
-				if(!$stmt){
-					log_info("Problem in sql stmt parsing.");
-				}		
-				$reportTypeBind = oci_bind_by_name($stmt,":pn_report_type",$reportType);
-				if(!$reportTypeBind){
-					log_info("Problem in oci_bind_by_name() for :pn_report_type to ".$reportType.".");
-				}			
-				$parentIdBind = oci_bind_by_name($stmt,":pn_prnt_id",$parentId);		
-				if(!$parentIdBind){
-					log_info("Problem in oci_bind_by_name() for :pn_prnt_id to ".$parentId.".");
-				}	
+		if($_POST['searchval'] != "" ){
+			$data = $this->getDMFSearchResults($reportType,"D",$_POST['searchval']);
+			return $data;
+		}else{		
+			$conn = parent::__adqConnection();				
+			$curs = oci_new_cursor($conn);
+			if($curs){
+				log_info("Problem in allocating a new cursor.");
 			}		
-		$cursBind = oci_bind_by_name($stmt,":pc_rc",$curs,-1,OCI_B_CURSOR);
-		if(!$cursBind){
-			log_info("Problem in oci_bind_by_name() for :pc_rc to ".$curs.".");
-		}		
-		$exeStmt = oci_execute($stmt,OCI_DEFAULT);
-		if(!$exeStmt){
-			log_info("Problem in oci_execute() for stmt.");
+				if(!$_POST['pid']){	
+					/*********************************************
+					*	Fetch the parent dimensions using following proc.
+					*	PKG_ADQ_DISPLAY.PRC_DISPLAY_DIMS(:pn_report_type , :pc_rc).
+					*	:pn_report_type = IN parameter	- report type id.
+					*	:pc_rc			= OUT parameter	- return value for (ID, LABEL, CHILDEXIST). 
+					*********************************************/					
+					$sql = "BEGIN PKG_ADQ_DISPLAY.PRC_DISPLAY_DIMS(:pn_report_type , :pc_rc); END;";
+					log_info("Sql - ".$sql." ");
+					$stmt = oci_parse($conn,$sql);
+					if(!$stmt){
+						log_info("Problem in sql stmt parsing.");
+					}
+					$reportTypeBind = oci_bind_by_name($stmt,":pn_report_type",$reportType);
+					if(!$reportTypeBind){
+						log_info("Problem in oci_bind_by_name() for :pn_report_type to ".$reportType.".");
+					}
+		
+				}else if($_POST['pid']){
+					$parentId = $_POST['pid'];
+					/*********************************************
+					*	Fetch the child dimensions using following proc.
+					*	PKG_ADQ_DISPLAY.PRC_DISPLAY_CDIMS(:pn_report_type , :pn_prnt_id , :pc_rc);.
+					*	:pn_report_type = IN parameter	- report type id.
+					*	:pn_prnt_id		= IN parameter	- parent id
+					*	:pc_rc			= OUT parameter	- return value for (ID, LABEL). 
+					*********************************************/					
+					$sql = "BEGIN PKG_ADQ_DISPLAY.PRC_DISPLAY_CDIMS(:pn_report_type , :pn_prnt_id , :pc_rc); END;";
+					log_info("Sql - ".$sql." ");
+					$stmt = oci_parse($conn,$sql);
+					if(!$stmt){
+						log_info("Problem in sql stmt parsing.");
+					}		
+					$reportTypeBind = oci_bind_by_name($stmt,":pn_report_type",$reportType);
+					if(!$reportTypeBind){
+						log_info("Problem in oci_bind_by_name() for :pn_report_type to ".$reportType.".");
+					}			
+					$parentIdBind = oci_bind_by_name($stmt,":pn_prnt_id",$parentId);		
+					if(!$parentIdBind){
+						log_info("Problem in oci_bind_by_name() for :pn_prnt_id to ".$parentId.".");
+					}	
+				}		
+			$cursBind = oci_bind_by_name($stmt,":pc_rc",$curs,-1,OCI_B_CURSOR);
+			if(!$cursBind){
+				log_info("Problem in oci_bind_by_name() for :pc_rc to ".$curs.".");
+			}		
+			$exeStmt = oci_execute($stmt,OCI_DEFAULT);
+			if(!$exeStmt){
+				log_info("Problem in oci_execute() for stmt.");
+			}
+			$exeCurs = oci_execute($curs,OCI_DEFAULT);
+			if(!$exeCurs){
+				log_info("Problem in oci_execute() for curs.");
+			}
+			while($row = oci_fetch_array($curs)){
+				$data[] = array('text'		=> $row['LABEL'],
+								'id'		=> $row['ID'],
+								'children'	=> strtoupper($row['CHILDEXIST']) == "TRUE" ? true : false);
+			}		
+			$freeStmt = oci_free_statement($stmt);
+			if(!$freeStmt){
+				log_info("Problem in oci_free_statement() for stmt.");
+			}		
+			$freeCurs = oci_free_statement($curs);
+			if(!$freeCurs){
+				log_info("Problem in oci_free_statement() for curs.");
+			}			
+			parent::__connectionClose($conn);
+			return $data;
 		}
-		$exeCurs = oci_execute($curs,OCI_DEFAULT);
-		if(!$exeCurs){
-			log_info("Problem in oci_execute() for curs.");
-		}
-		while($row = oci_fetch_array($curs)){
-			$data[] = array('text'		=> $row['LABEL'],
-							'id'		=> $row['ID'],
-							'children'	=> strtoupper($row['CHILDEXIST']) == "TRUE" ? true : false);
-		}		
-		$freeStmt = oci_free_statement($stmt);
-		if(!$freeStmt){
-			log_info("Problem in oci_free_statement() for stmt.");
-		}		
-		$freeCurs = oci_free_statement($curs);
-		if(!$freeCurs){
-			log_info("Problem in oci_free_statement() for curs.");
-		}			
-		parent::__connectionClose($conn);
-		return $data;
 	}
 	
 	/*********************************************
@@ -105,56 +111,61 @@ class Adopsreport_model extends MY_Model {
 	*********************************************/	
 	public function getMetrics()
 	{	
-		$conn = parent::__adqConnection();		
 		$reportType = "1";
-		$curs = oci_new_cursor($conn);
-		if($curs){
-			log_info("Problem in allocating a new cursor.");
+		if($_POST['searchval'] != "" ){
+			$data = $this->getDMFSearchResults($reportType,"M",$_POST['searchval']);
+			return $data;
+		}else{	
+			$conn = parent::__adqConnection();		
+			$curs = oci_new_cursor($conn);
+			if($curs){
+				log_info("Problem in allocating a new cursor.");
+			}
+	
+			/*********************************************
+			*	Fetch the metrics using following proc.
+			*	PKG_ADQ_DISPLAY.PRC_DISPLAY_METRICS(:pn_report_type , :pc_rc)
+			*	:pn_report_type = IN parameter	- report type id.
+			*	:pc_rc			= OUT parameter	- return value for (ID, LABEL). 
+			*********************************************/		
+			$sql = "BEGIN PKG_ADQ_DISPLAY.PRC_DISPLAY_METRICS(:pn_report_type , :pc_rc); END;";
+			log_info("Sql - ".$sql." ");
+			$stmt = oci_parse($conn,$sql);
+			if(!$stmt){
+				log_info("Problem in sql stmt parsing.");
+			}
+			$reportTypeBind = oci_bind_by_name($stmt,":pn_report_type",$reportType);
+			if(!$reportTypeBind){
+				log_info("Problem in oci_bind_by_name() for :pn_report_type to ".$reportType.".");
+			}		
+			$cursBind = oci_bind_by_name($stmt,":pc_rc",$curs,-1,OCI_B_CURSOR);
+			if(!$cursBind){
+				log_info("Problem in oci_bind_by_name() for :pc_rc to ".$curs.".");
+			}		
+			$exeStmt = oci_execute($stmt,OCI_DEFAULT);
+			if(!$exeStmt){
+				log_info("Problem in oci_execute() for stmt.");
+			}
+			$exeCurs = oci_execute($curs,OCI_DEFAULT);
+			if(!$exeCurs){
+				log_info("Problem in oci_execute() for curs.");
+			}
+			while($row = oci_fetch_array($curs)){
+				$data[] = array('text'		=> $row['LABEL'],
+								'id'		=> $row['ID'],
+								'children'	=> false);
+			}		
+			$freeStmt = oci_free_statement($stmt);
+			if(!$freeStmt){
+				log_info("Problem in oci_free_statement() for stmt.");
+			}		
+			$freeCurs = oci_free_statement($curs);
+			if(!$freeCurs){
+				log_info("Problem in oci_free_statement() for curs.");
+			}			
+			parent::__connectionClose($conn);
+			return $data;		
 		}
-
-		/*********************************************
-		*	Fetch the metrics using following proc.
-		*	PKG_ADQ_DISPLAY.PRC_DISPLAY_METRICS(:pn_report_type , :pc_rc)
-		*	:pn_report_type = IN parameter	- report type id.
-		*	:pc_rc			= OUT parameter	- return value for (ID, LABEL). 
-		*********************************************/		
-		$sql = "BEGIN PKG_ADQ_DISPLAY.PRC_DISPLAY_METRICS(:pn_report_type , :pc_rc); END;";
-		log_info("Sql - ".$sql." ");
-		$stmt = oci_parse($conn,$sql);
-		if(!$stmt){
-			log_info("Problem in sql stmt parsing.");
-		}
-		$reportTypeBind = oci_bind_by_name($stmt,":pn_report_type",$reportType);
-		if(!$reportTypeBind){
-			log_info("Problem in oci_bind_by_name() for :pn_report_type to ".$reportType.".");
-		}		
-		$cursBind = oci_bind_by_name($stmt,":pc_rc",$curs,-1,OCI_B_CURSOR);
-		if(!$cursBind){
-			log_info("Problem in oci_bind_by_name() for :pc_rc to ".$curs.".");
-		}		
-		$exeStmt = oci_execute($stmt,OCI_DEFAULT);
-		if(!$exeStmt){
-			log_info("Problem in oci_execute() for stmt.");
-		}
-		$exeCurs = oci_execute($curs,OCI_DEFAULT);
-		if(!$exeCurs){
-			log_info("Problem in oci_execute() for curs.");
-		}
-		while($row = oci_fetch_array($curs)){
-			$data[] = array('text'		=> $row['LABEL'],
-							'id'		=> $row['ID'],
-							'children'	=> false);
-		}		
-		$freeStmt = oci_free_statement($stmt);
-		if(!$freeStmt){
-			log_info("Problem in oci_free_statement() for stmt.");
-		}		
-		$freeCurs = oci_free_statement($curs);
-		if(!$freeCurs){
-			log_info("Problem in oci_free_statement() for curs.");
-		}			
-		parent::__connectionClose($conn);
-		return $data;		
 	}
 	
 	/*********************************************
@@ -164,54 +175,133 @@ class Adopsreport_model extends MY_Model {
 	*********************************************/		
 	public function getFilters()
 	{
-		$conn = parent::__adqConnection();		
 		$reportType = "1";
+		if($_POST['searchval'] != "" ){
+			$data = $this->getDMFSearchResults($reportType,"F",$_POST['searchval']);
+			return $data;
+		}else{			
+			$conn = parent::__adqConnection();		
+			$curs = oci_new_cursor($conn);
+			if($curs){
+				log_info("Problem in allocating a new cursor.");
+			}		
+			if(!$_POST['pid']){		
+					/*********************************************
+					*	Fetch the parent filters using following proc.
+					*	PKG_ADQ_DISPLAY.PRC_DISPLAY_FILTERS(:pn_report_type , :pc_rc)
+					*	:pn_report_type = IN parameter	- report type id.
+					*	:pc_rc			= OUT parameter	- return value for (ID, LABEL, CHILDEXIST). 
+					*********************************************/				
+					$sql = "BEGIN PKG_ADQ_DISPLAY.PRC_DISPLAY_FILTERS(:pn_report_type , :pc_rc); END;";
+					log_info("Sql - ".$sql." ");
+					$stmt = oci_parse($conn,$sql);
+					if(!$stmt){
+						log_info("Problem in sql stmt parsing.");
+					}
+					$reportTypeBind = oci_bind_by_name($stmt,":pn_report_type",$reportType);
+					if(!$reportTypeBind){
+						log_info("Problem in oci_bind_by_name() for :pn_report_type to ".$reportType.".");
+					}
+		
+				}else if($_POST['pid']){
+					$parentId = $_POST['pid'];
+					/*********************************************
+					*	Fetch the child filters using following proc.
+					*	PKG_ADQ_DISPLAY.PRC_DISPLAY_CDIMS(:pn_report_type , :pn_prnt_id , :pc_rc);.
+					*	:pn_report_type = IN parameter	- report type id.
+					*	:pn_prnt_id		= IN parameter	- parent id
+					*	:pc_rc			= OUT parameter	- return value for (ID, LABEL). 
+					*********************************************/					
+					$sql = "BEGIN PKG_ADQ_DISPLAY.PRC_DISPLAY_CFILTERS(:pn_report_type , :pn_prnt_id , :pc_rc); END;";
+					log_info("Sql - ".$sql." ");
+					$stmt = oci_parse($conn,$sql);
+					if(!$stmt){
+						log_info("Problem in sql stmt parsing.");
+					}		
+					$reportTypeBind = oci_bind_by_name($stmt,":pn_report_type",$reportType);
+					if(!$reportTypeBind){
+						log_info("Problem in oci_bind_by_name() for :pn_report_type to ".$reportType.".");
+					}			
+					$parentIdBind = oci_bind_by_name($stmt,":pn_prnt_id",$parentId);		
+					if(!$parentIdBind){
+						log_info("Problem in oci_bind_by_name() for :pn_prnt_id to ".$parentId.".");
+					}
+				}		
+				$cursBind = oci_bind_by_name($stmt,":pc_rc",$curs,-1,OCI_B_CURSOR);
+				if(!$cursBind){
+					log_info("Problem in oci_bind_by_name() for :pc_rc to ".$curs.".");
+				}		
+				$exeStmt = oci_execute($stmt,OCI_DEFAULT);
+				if(!$exeStmt){
+					log_info("Problem in oci_execute() for stmt.");
+				}
+				$exeCurs = oci_execute($curs,OCI_DEFAULT);
+				if(!$exeCurs){
+					log_info("Problem in oci_execute() for curs.");
+				}
+				while($row = oci_fetch_array($curs)){
+					$data[] = array('text'		=> $row['LABEL'],
+									'id'		=> $row['ID'],
+									'children'	=> strtoupper($row['CHILDEXIST']) == "TRUE" ? true : false);
+				}		
+				$freeStmt = oci_free_statement($stmt);
+				if(!$freeStmt){
+					log_info("Problem in oci_free_statement() for stmt.");
+				}		
+				$freeCurs = oci_free_statement($curs);
+				if(!$freeCurs){
+					log_info("Problem in oci_free_statement() for curs.");
+				}			
+				parent::__connectionClose($conn);
+				return $data;
+		}
+	}	
+	
+	
+
+	/*********************************************
+	*	Created By 	 : Aksahy Sardar
+	*	Created Date : 08 Oct 2012
+	*	Description	 : Get search result data for Dimensions,Metrics and Filters.
+	*	$reportType	 = Report type Id.
+	*	$dmfType	 = Send "D" for Dimensions, "M" for Metrics and "F" for Filters.
+	*	$searchTerm  = Search term to be searched in list.
+	*********************************************/		
+	public function getDMFSearchResults($reportType,$dmfType,$searchTerm){
+
+		$conn = parent::__adqConnection();		
 		$curs = oci_new_cursor($conn);
 		if($curs){
 			log_info("Problem in allocating a new cursor.");
+		}
+
+		/*********************************************
+		*	Fetch the metrics using following proc.
+		*	PKG_ADQ_DISPLAY.PRC_DISPLAY_METRICS(:pn_report_type , :pc_rc)
+		*	:pn_report_type = IN parameter	- report type id.
+		*	:pv_dmf			= IN parameter	- "D" for Dimensions, "M" for Metrics and "F" for Filters.
+		*	:pv_srch_str	= IN parameter	- Search term.
+		*	:pc_rc			= OUT parameter	- return value for (ID, LABEL, PARENTID, CHILDEXIST). 
+		*********************************************/		
+
+		$sql = "BEGIN PKG_ADQ_DISPLAY.PRC_SEARCH_DMF(:pn_report_type , :pv_dmf , :pv_srch_str , :pc_rc); END;";
+		log_info("Sql - ".$sql." ");
+		$stmt = oci_parse($conn,$sql);
+		if(!$stmt){
+			log_info("Problem in sql stmt parsing.");
+		}
+		$reportTypeBind = oci_bind_by_name($stmt,":pn_report_type",$reportType);
+		if(!$reportTypeBind){
+			log_info("Problem in oci_bind_by_name() for :pn_report_type to ".$reportType.".");
+		}
+		$dmfTypeBind = oci_bind_by_name($stmt,":pv_dmf",$dmfType);
+		if(!$dmfTypeBind){
+			log_info("Problem in oci_bind_by_name() for :pv_dmf to ".$dmfType.".");
 		}		
-			if(!$_POST['pid']){		
-				/*********************************************
-				*	Fetch the parent filters using following proc.
-				*	PKG_ADQ_DISPLAY.PRC_DISPLAY_FILTERS(:pn_report_type , :pc_rc)
-				*	:pn_report_type = IN parameter	- report type id.
-				*	:pc_rc			= OUT parameter	- return value for (ID, LABEL, CHILDEXIST). 
-				*********************************************/				
-				$sql = "BEGIN PKG_ADQ_DISPLAY.PRC_DISPLAY_FILTERS(:pn_report_type , :pc_rc); END;";
-				log_info("Sql - ".$sql." ");
-				$stmt = oci_parse($conn,$sql);
-				if(!$stmt){
-					log_info("Problem in sql stmt parsing.");
-				}
-				$reportTypeBind = oci_bind_by_name($stmt,":pn_report_type",$reportType);
-				if(!$reportTypeBind){
-					log_info("Problem in oci_bind_by_name() for :pn_report_type to ".$reportType.".");
-				}
-	
-			}else if($_POST['pid']){
-				$parentId = $_POST['pid'];
-				/*********************************************
-				*	Fetch the child filters using following proc.
-				*	PKG_ADQ_DISPLAY.PRC_DISPLAY_CDIMS(:pn_report_type , :pn_prnt_id , :pc_rc);.
-				*	:pn_report_type = IN parameter	- report type id.
-				*	:pn_prnt_id		= IN parameter	- parent id
-				*	:pc_rc			= OUT parameter	- return value for (ID, LABEL). 
-				*********************************************/					
-				$sql = "BEGIN PKG_ADQ_DISPLAY.PRC_DISPLAY_CFILTERS(:pn_report_type , :pn_prnt_id , :pc_rc); END;";
-				log_info("Sql - ".$sql." ");
-				$stmt = oci_parse($conn,$sql);
-				if(!$stmt){
-					log_info("Problem in sql stmt parsing.");
-				}		
-				$reportTypeBind = oci_bind_by_name($stmt,":pn_report_type",$reportType);
-				if(!$reportTypeBind){
-					log_info("Problem in oci_bind_by_name() for :pn_report_type to ".$reportType.".");
-				}			
-				$parentIdBind = oci_bind_by_name($stmt,":pn_prnt_id",$parentId);		
-				if(!$parentIdBind){
-					log_info("Problem in oci_bind_by_name() for :pn_prnt_id to ".$parentId.".");
-				}
-			}		
+		$searchTermBind = oci_bind_by_name($stmt,":pv_srch_str",$searchTerm);
+		if(!$searchTermBind){
+			log_info("Problem in oci_bind_by_name() for :pv_srch_str to ".$searchTerm.".");
+		}		
 		$cursBind = oci_bind_by_name($stmt,":pc_rc",$curs,-1,OCI_B_CURSOR);
 		if(!$cursBind){
 			log_info("Problem in oci_bind_by_name() for :pc_rc to ".$curs.".");
@@ -225,9 +315,10 @@ class Adopsreport_model extends MY_Model {
 			log_info("Problem in oci_execute() for curs.");
 		}
 		while($row = oci_fetch_array($curs)){
-			$data[] = array('text'		=> $row['LABEL'],
-							'id'		=> $row['ID'],
-							'children'	=> strtoupper($row['CHILDEXIST']) == "TRUE" ? true : false);
+				$data[] = array('text'		=> $row['LABEL'],
+								'id'		=> $row['ID'],
+								'parentid'	=> $row['PARENTID'] == NULL ? "0" : $row['PARENTID'],
+								'children'	=> strtoupper($row['CHILDEXIST']) == "TRUE" ? true : false);
 		}		
 		$freeStmt = oci_free_statement($stmt);
 		if(!$freeStmt){
@@ -238,8 +329,11 @@ class Adopsreport_model extends MY_Model {
 			log_info("Problem in oci_free_statement() for curs.");
 		}			
 		parent::__connectionClose($conn);
-		return $data;
-	}	
+		return $data;				
+	}
+
+
+	
 	
 	/*********************************************
 	*	Created By 	 : Aksahy Sardar / Amin.
@@ -322,13 +416,22 @@ class Adopsreport_model extends MY_Model {
 		$conn 		= parent::__adqConnection();
 		$offSet		=	1;
 		$numOfRecs	=	20;
+		$inputType	= $_REQUEST['inputtype'];
+		
+		if (isset($_REQUEST['page'])){
+			$offSet = $_REQUEST['page'];
+		}
+		if (isset($_REQUEST['searchval'])){
+			$offSet = NULL;
+			$numOfRecs = NULL;
+		}
 		
 		$curs = oci_new_cursor($conn);
 		if(!$curs){
 			log_info("Problem in allocating a new cursor.");
 		}	
 
-		$sql = "BEGIN PKG_ADQ_META.prc_get_filter_data(:pn_rep_lookup_id,  :pn_first_rec, :pn_num_rec, :p_fil_data_cur); END;";
+		$sql = "BEGIN PKG_ADQ_META.prc_get_filter_data(:pn_rep_lookup_id, :pn_first_rec, :pn_num_rec, :pv_val, :p_fil_data_cur); END;";
 		log_info("Sql - ".$sql." ");
 		$stmt = oci_parse($conn,$sql);		
 		if(!$stmt){
@@ -350,6 +453,11 @@ class Adopsreport_model extends MY_Model {
 			log_info("Problem in oci_bind_by_name() for :pn_num_rec.");
 		}	
 		
+		$searchTermOfRecsBind = oci_bind_by_name($stmt,":pv_val",$_REQUEST['searchval']);		
+		if(!$searchTermOfRecsBind){
+			log_info("Problem in oci_bind_by_name() for :pv_val.");
+		}	
+		
 		$cursBind = oci_bind_by_name($stmt,":p_fil_data_cur",$curs,-1,OCI_B_CURSOR);
 		if(!$cursBind){
 			log_info("Problem in oci_bind_by_name() for :p_fil_data_cur to ".$curs.".");
@@ -364,9 +472,14 @@ class Adopsreport_model extends MY_Model {
 			log_info("Problem in oci_execute() for curs." . oci_error($stmt));
 		}
 		while($row = oci_fetch_array($curs)){
-			$data[] = array('text'		=> $row['NAME'],
-							'id'		=> $row['ID'],
-							'children'	=> false);
+			if($inputType == "ListBox"){
+				$data[] = array('text'		=> $row['NAME'],
+								'id'		=> $row['ID'],
+								'parentid'	=> "0",
+								'children'	=> false);
+			}else if($inputType == "Search"){
+				$data[] = $row['NAME'];
+			}
 		}		
 		$freeStmt = oci_free_statement($stmt);
 		if(!$freeStmt){
@@ -389,8 +502,7 @@ class Adopsreport_model extends MY_Model {
 	*****************************************************/		
 	public function getSelectedFilterData($id, $selectedFilterId)
 	{			
-		$conn 		= parent::__adqConnection();		
-				
+		$conn 		= 	parent::__adqConnection();						
 		$curs = oci_new_cursor($conn);
 		if(!$curs){
 			log_info("Problem in allocating a new cursor.");
@@ -421,7 +533,7 @@ class Adopsreport_model extends MY_Model {
 			log_info("Problem in oci_bind_by_name() for :p_fil_data_cur to ".$curs.".");
 		}		
 			
-		$exeStmt = oci_execute($stmt,OCI_DEFAULT);
+		$exeStmt = oci_execute($stmt, OCI_DEFAULT);
 		if(!$exeStmt){
 			log_info("Problem in oci_execute() for stmt." . oci_error($stmt));
 		}
@@ -430,9 +542,10 @@ class Adopsreport_model extends MY_Model {
 			log_info("Problem in oci_execute() for curs." . oci_error($stmt));
 		}
 		while($row = oci_fetch_array($curs)){
+			
 			$data[] = array('text'		=> $row['NAME'],
 							'id'		=> $row['ID'],
-							'children'	=> false);
+							'parentid'	=> 0);
 		}		
 		$freeStmt = oci_free_statement($stmt);
 		if(!$freeStmt){
